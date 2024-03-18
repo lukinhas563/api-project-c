@@ -1,10 +1,19 @@
 import { Router } from 'express';
-import { home, homePost } from '../controllers/home-controller';
+import {
+    ColaboratorsController,
+    UsersController,
+    HomeController,
+} from '../controllers';
 
 const route = Router();
 
-// HOME
-route.get('/', home);
-route.post('/:id?', homePost);
+//HOME
+route.get('/', HomeController.get);
+
+// USERS
+route.post('/register', UsersController.create);
+
+// COLABORATORS
+route.post('/colaborators', ColaboratorsController.create);
 
 export default route;
