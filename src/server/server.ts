@@ -1,6 +1,8 @@
+import 'dotenv/config';
+import './shared/services/translations';
+
 import express from 'express';
 import route from './routes/routes';
-import 'dotenv/config';
 
 const server = express();
 
