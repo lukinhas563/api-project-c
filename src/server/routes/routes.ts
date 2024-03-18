@@ -12,7 +12,7 @@ route.post('/register', UsersController.create);
 // COLABORATORS
 route.post(
     '/colaborators/:filter?',
-    ColaboratorsController.createBodyValidation,
+    ColaboratorsController.createValidation,
     ColaboratorsController.create,
 );
 

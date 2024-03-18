@@ -17,7 +17,7 @@ const filterSchema = yup.object({
 
 type IFilter = yup.InferType<typeof filterSchema>;
 
-export const createBodyValidation = validation((getSchema) => ({
+export const createValidation = validation((getSchema) => ({
     body: getSchema<IColaborator>(colaboratorSchema),
     query: getSchema<IFilter>(filterSchema),
 }));
