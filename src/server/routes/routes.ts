@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import {
-    ColaboratorsController,
-    UsersController,
-    HomeController,
-} from '../controllers';
+import { ColaboratorsController, UsersController, HomeController } from '../controllers';
 
 const route = Router();
 
@@ -14,6 +10,10 @@ route.get('/', HomeController.get);
 route.post('/register', UsersController.create);
 
 // COLABORATORS
-route.post('/colaborators', ColaboratorsController.create);
+route.post(
+    '/colaborators/:filter?',
+    ColaboratorsController.createBodyValidation,
+    ColaboratorsController.create,
+);
 
 export default route;

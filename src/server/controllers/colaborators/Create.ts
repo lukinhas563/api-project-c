@@ -1,35 +1,29 @@
 import { Request, Response } from 'express';
+import { validation } from '../../shared/middlewares';
 import * as yup from 'yup';
 
 const colaboratorSchema = yup.object({
     first_name: yup.string().required().min(3),
     last_name: yup.string().required().min(3),
+    cpf: yup.string().required().min(11),
+    email: yup.string().email().required(),
 });
 
 type IColaborator = yup.InferType<typeof colaboratorSchema>;
 
-export const create = async (
-    req: Request<{}, {}, IColaborator>,
-    res: Response,
-) => {
-    let validateData: IColaborator | undefined = undefined;
+const filterSchema = yup.object({
+    filter: yup.string().min(3),
+});
 
-    try {
-        validateData = await colaboratorSchema.validate(req.body, {
-            abortEarly: false,
-        });
+type IFilter = yup.InferType<typeof filterSchema>;
 
-        return res.json({ result: 'CREATE A COLABORATOR', body: req.body });
-    } catch (err) {
-        const yupError = err as yup.ValidationError;
+export const createBodyValidation = validation((getSchema) => ({
+    body: getSchema<IColaborator>(colaboratorSchema),
+    query: getSchema<IFilter>(filterSchema),
+}));
 
-        const validationErrors: Record<string, string> = {};
-        yupError.inner.forEach((error) => {
-            if (!error.path) return;
+export const create = async (req: Request<{}, {}, IColaborator>, res: Response) => {
+    console.log(req.body, req.query);
 
-            validationErrors[error.path] = error.message;
-        });
-
-        return res.status(400).json({ errors: validationErrors });
-    }
+    return res.json({ result: 'CREATE A COLABORATOR', body: req.body });
 };
