@@ -11,15 +11,8 @@ const colaboratorSchema = yup.object({
 
 type IColaborator = yup.InferType<typeof colaboratorSchema>;
 
-const filterSchema = yup.object({
-    filter: yup.string().min(3),
-});
-
-type IFilter = yup.InferType<typeof filterSchema>;
-
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IColaborator>(colaboratorSchema),
-    query: getSchema<IFilter>(filterSchema),
 }));
 
 export const create = async (req: Request<{}, {}, IColaborator>, res: Response) => {
