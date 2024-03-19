@@ -11,6 +11,11 @@ route.post('/register', UsersController.create);
 
 // COLABORATORS
 route.get('/colaborators', ColaboratorsController.getAllValidation, ColaboratorsController.getAll);
+route.get(
+    '/colaborators/:id',
+    ColaboratorsController.getByIdValidation,
+    ColaboratorsController.getById,
+);
 route.post('/colaborators', ColaboratorsController.createValidation, ColaboratorsController.create);
 
 export default route;

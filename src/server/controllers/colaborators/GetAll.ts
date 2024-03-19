@@ -17,5 +17,5 @@ export const getAllValidation = validation((getSchema) => ({
 export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Response) => {
     console.log(req.query);
 
-    return res.status(500).json({ result: 'GET A COLABORATOR NOT IMPLEMENTED' });
+    return res.status(500).json({ result: 'GET ALL COLABORATOR NOT IMPLEMENTED' });
 };
