@@ -17,5 +17,10 @@ route.get(
     ColaboratorsController.getById,
 );
 route.post('/colaborators', ColaboratorsController.createValidation, ColaboratorsController.create);
+route.put(
+    '/colaborators/:id',
+    ColaboratorsController.updateByIdValidation,
+    ColaboratorsController.updateById,
+);
 
 export default route;
