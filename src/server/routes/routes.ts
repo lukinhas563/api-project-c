@@ -22,5 +22,10 @@ route.put(
     ColaboratorsController.updateByIdValidation,
     ColaboratorsController.updateById,
 );
+route.delete(
+    '/colaborators/:id',
+    ColaboratorsController.deleteByIdValidation,
+    ColaboratorsController.deleteById,
+);
 
 export default route;
