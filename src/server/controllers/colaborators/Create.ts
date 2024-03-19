@@ -18,5 +18,5 @@ export const createValidation = validation((getSchema) => ({
 export const create = async (req: Request<{}, {}, IColaborator>, res: Response) => {
     console.log(req.body, req.query);
 
-    return res.json({ result: 'CREATE A COLABORATOR', body: req.body });
+    return res.status(500).json({ result: 'CREATE A COLABORATOR NOT IMPLEMENTED' });
 };

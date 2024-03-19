@@ -10,10 +10,7 @@ route.get('/', HomeController.get);
 route.post('/register', UsersController.create);
 
 // COLABORATORS
-route.post(
-    '/colaborators/:filter?',
-    ColaboratorsController.createValidation,
-    ColaboratorsController.create,
-);
+route.get('/colaborators', ColaboratorsController.getAllValidation, ColaboratorsController.getAll);
+route.post('/colaborators', ColaboratorsController.createValidation, ColaboratorsController.create);
 
 export default route;
