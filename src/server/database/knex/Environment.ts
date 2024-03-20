@@ -1,11 +1,18 @@
 import { Knex } from 'knex';
 import path from 'path';
 
-export const development: Knex.Config = {
+export const production: Knex.Config = {
     client: 'mysql2',
-    useNullAsDefault: true,
     connection: {
-        filename: path.resolve(__dirname, '..', '..', '..', '..', 'database.sql'),
+        host: process.env.HOST,
+        database: process.env.DATA_BASE,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        port: 3306,
+    },
+    pool: {
+        min: 2,
+        max: 10,
     },
     migrations: {
         directory: path.resolve(__dirname, '..', 'migrations'),
@@ -14,14 +21,14 @@ export const development: Knex.Config = {
         directory: path.resolve(__dirname, '..', 'seeds'),
     },
 };
-
-export const developmentForReal: Knex.Config = {
+export const development: Knex.Config = {
     client: 'mysql2',
     connection: {
         host: process.env.HOST,
-        database: process.env.DATABASE,
+        database: process.env.DATA_BASE,
         user: process.env.USER,
         password: process.env.PASSWORD,
+        port: 3306,
     },
     migrations: {
         directory: path.resolve(__dirname, '..', 'migrations'),
@@ -34,8 +41,4 @@ export const developmentForReal: Knex.Config = {
 export const test: Knex.Config = {
     ...development,
     connection: ':memory:',
-};
-
-export const production: Knex.Config = {
-    ...developmentForReal,
 };
