@@ -1,11 +1,14 @@
 import { Knex } from 'knex';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '..', '.env') });
 
 export const production: Knex.Config = {
     client: 'mysql2',
     connection: {
         host: process.env.HOST,
-        database: process.env.DATA_BASE,
+        database: process.env.DATABASE,
         user: process.env.USER,
         password: process.env.PASSWORD,
         port: 3306,
@@ -25,7 +28,7 @@ export const development: Knex.Config = {
     client: 'mysql2',
     connection: {
         host: process.env.HOST,
-        database: process.env.DATA_BASE,
+        database: process.env.DATABASE,
         user: process.env.USER,
         password: process.env.PASSWORD,
         port: 3306,
