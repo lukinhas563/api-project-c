@@ -11,6 +11,7 @@ export async function up(knex: Knex) {
             table.string('cpf', 11).notNullable().unique();
             table.string('email', 255).notNullable().unique();
             table.string('password_hash', 255).notNullable().unique();
+            table.timestamps(true, true);
 
             table.comment('Table for config users');
         })

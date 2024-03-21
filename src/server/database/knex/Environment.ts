@@ -27,7 +27,7 @@ export const production: Knex.Config = {
 export const development: Knex.Config = {
     client: 'sqlite3',
     connection: {
-        filename: path.resolve(__dirname, '..','..','..','..', 'database.sqlite')
+        filename: path.resolve(__dirname, '..', '..', '..', '..', 'database.sqlite'),
     },
     migrations: {
         directory: path.resolve(__dirname, '..', 'migrations'),
@@ -38,9 +38,9 @@ export const development: Knex.Config = {
     pool: {
         afterCreate: (connection: any, done: Function) => {
             connection.run('PRAGMA foreign_keys = ON');
-            done()
-        }
-    }
+            done();
+        },
+    },
 };
 
 export const test: Knex.Config = {
