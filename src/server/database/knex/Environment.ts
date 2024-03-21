@@ -25,13 +25,9 @@ export const production: Knex.Config = {
     },
 };
 export const development: Knex.Config = {
-    client: 'mysql2',
+    client: 'sqlite3',
     connection: {
-        host: process.env.HOST,
-        database: process.env.DATABASE,
-        user: process.env.USER,
-        password: process.env.PASSWORD,
-        port: 3306,
+        filename: path.resolve(__dirname, '..','..','..','..', 'database.sqlite')
     },
     migrations: {
         directory: path.resolve(__dirname, '..', 'migrations'),
@@ -39,6 +35,12 @@ export const development: Knex.Config = {
     seeds: {
         directory: path.resolve(__dirname, '..', 'seeds'),
     },
+    pool: {
+        afterCreate: (connection: any, done: Function) => {
+            connection.run('PRAGMA foreign_keys = ON');
+            done()
+        }
+    }
 };
 
 export const test: Knex.Config = {
