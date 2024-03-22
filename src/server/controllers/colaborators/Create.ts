@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
 import { typeColaborator } from '../../database/models';
-import * as yup from 'yup';
 import { colaboratorsProviders } from '../../database/providers/Colaborators';
+import * as yup from 'yup';
 
 type typeBodyColaborator = Omit<typeColaborator, 'id'>;
 
@@ -13,7 +13,7 @@ export const createValidation = validation((getSchema) => ({
             first_name: yup.string().required().min(3),
             last_name: yup.string().optional().min(3),
             cpf: yup.string().optional().min(11),
-            email: yup.string().optional().required(),
+            email: yup.string().optional().email(),
             id_user: yup.number().integer().required(),
         }),
     ),

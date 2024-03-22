@@ -7,7 +7,7 @@ const route = Router();
 route.get('/', HomeController.get);
 
 // USERS
-route.post('/register', UsersController.create);
+route.post('/register', UsersController.createUserValidation, UsersController.create);
 
 // COLABORATORS
 route.get('/colaborators', ColaboratorsController.getAllValidation, ColaboratorsController.getAll);
