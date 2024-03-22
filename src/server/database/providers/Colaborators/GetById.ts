@@ -1,6 +1,5 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
-import { typeColaborator } from '../../models';
 
 export const getById = async (idColaborator: number, idUser: number) => {
     try {
