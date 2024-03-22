@@ -4,14 +4,16 @@ import { EnumTableNames } from '../ETablesNames';
 export async function up(knex: Knex) {
     return knex.schema
         .createTable(EnumTableNames.colaborators, (table) => {
-            table.bigIncrements('id').primary();
+            table.increments('id').unsigned().primary();
             table.string('photo', 255);
             table.string('first_name', 150).notNullable();
             table.string('last_name', 150);
             table.string('cpf', 11);
             table.string('email', 255);
             table.integer('id_user').unsigned();
+
             table.foreign('id_user').references('users.id').onDelete('CASCADE').onUpdate('CASCADE');
+
             table.timestamps(true, true);
 
             table.comment('Table for config colaborators');

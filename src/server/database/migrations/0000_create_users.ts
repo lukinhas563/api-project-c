@@ -4,7 +4,7 @@ import { EnumTableNames } from '../ETablesNames';
 export async function up(knex: Knex) {
     return knex.schema
         .createTable(EnumTableNames.users, (table) => {
-            table.bigIncrements('id').primary();
+            table.increments('id').unsigned().primary();
             table.string('user_name', 150).notNullable().unique();
             table.string('first_name', 150).notNullable();
             table.string('last_name', 150);

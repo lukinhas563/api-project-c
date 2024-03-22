@@ -9,7 +9,7 @@ export const production: Knex.Config = {
     connection: {
         host: process.env.HOST,
         database: process.env.DATABASE,
-        user: process.env.USER,
+        user: 'root',
         password: process.env.PASSWORD,
         port: 3306,
     },

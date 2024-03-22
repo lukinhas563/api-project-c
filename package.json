@@ -9,6 +9,7 @@
         "start": "node ./build/index.js",
         "test": "jest",
         "knex:migrate": "npx knex --knexfile ./src/server/database/knex/Environment.ts migrate:latest",
+        "knex:migrate-up": "npx knex --knexfile ./src/server/database/knex/Environment.ts migrate:up",
         "knex:rollback": "npx knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback",
         "knex:rollback-all": "npx knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback --all",
         "knex:seed": "npx knex --knexfile ./src/server/database/knex/Environment.ts seed:run"
