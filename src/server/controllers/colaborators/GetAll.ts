@@ -21,7 +21,11 @@ export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Resp
     const limit = req.query.limit;
     const filter = req.query.filter;
 
-    const result = await colaboratorsProviders.getAll(Number(page), Number(limit), filter || '');
+    const result = await colaboratorsProviders.getAll(
+        Number(page) || 1,
+        Number(limit) || 10,
+        filter || '',
+    );
     const count = await colaboratorsProviders.count(filter || '');
 
     if (result instanceof Error) {
