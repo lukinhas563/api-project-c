@@ -31,11 +31,20 @@ export const updateById = async (
     req: Request<typeParamsProps, {}, typeBodyProps>,
     res: Response,
 ) => {
-    console.log(req.params);
-    console.log(req.body);
-
     if (Object.keys(req.body).length === 0) {
-        return res.status(400).json({ error: 'O corpo da requisição não pode estar vazio.' });
+        return res.status(400).json({
+            error: {
+                default: 'O corpo da requisição não pode estar vazio.',
+            },
+        });
+    }
+
+    if (!req.params.id) {
+        return res.status(400).json({
+            errors: {
+                default: 'O parâmetro "id" precisa ser informado.',
+            },
+        });
     }
 
     const result = await colaboratorsProviders.update(req.body, Number(req.params.id));

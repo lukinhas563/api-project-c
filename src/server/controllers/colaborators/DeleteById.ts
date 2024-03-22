@@ -14,7 +14,13 @@ export const deleteByIdValidation = validation((getSchema) => ({
 }));
 
 export const deleteById = async (req: Request<typeParamsProps>, res: Response) => {
-    console.log(req.params);
+    if (!req.params.id) {
+        return res.status(400).json({
+            errors: {
+                default: 'O parâmetro "id" precisa ser informado.',
+            },
+        });
+    }
 
     const result = await colaboratorsProviders.deleteById(Number(req.params.id));
 

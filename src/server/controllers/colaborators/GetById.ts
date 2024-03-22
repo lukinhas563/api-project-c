@@ -24,9 +24,12 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req: Request<typeParamsProps>, res: Response) => {
-    console.log(req.params);
-
-    if (!req.params.id) return;
+    if (!req.params.id)
+        return res.status(400).json({
+            errors: {
+                default: 'O parâmetro "id" precisa ser informado.',
+            },
+        });
 
     const result = await colaboratorsProviders.getById(req.params.id, req.body.id_user);
 

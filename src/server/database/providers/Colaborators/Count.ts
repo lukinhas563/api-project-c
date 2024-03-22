@@ -1,7 +1,7 @@
-import { EnumTableNames } from '../../database/ETablesNames';
-import { Knex } from '../../database/knex';
+import { EnumTableNames } from '../../ETablesNames';
+import { Knex } from '../../knex';
 
-export const count = async (filter = ''): Promise<number | Error> => {
+export const count = async (filter = '') => {
     try {
         const [{ count }] = await Knex(EnumTableNames.colaborators)
             .where('first_name', 'like', `%${filter}%`)
