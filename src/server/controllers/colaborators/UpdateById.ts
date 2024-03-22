@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
 import { typeColaborator } from '../../database/models';
 import * as yup from 'yup';
+import { colaboratorsProviders } from '../../database/providers/Colaborators';
 
 type typeParamsProps = {
     id?: number;
@@ -37,5 +38,15 @@ export const updateById = async (
         return res.status(400).json({ error: 'O corpo da requisição não pode estar vazio.' });
     }
 
-    return res.status(500).json({ result: 'UPDATE A COLABORATOR BY ID NOT IMPLEMENTED' });
+    const result = await colaboratorsProviders.update(req.body, Number(req.params.id));
+
+    if (result instanceof Error) {
+        return res.status(500).json({
+            errors: {
+                default: result.message,
+            },
+        });
+    }
+
+    return res.status(200).json({ result: 'UPDATED A COLABORATOR' });
 };
