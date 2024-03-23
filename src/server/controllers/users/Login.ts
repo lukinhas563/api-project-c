@@ -4,6 +4,7 @@ import { typeUser } from '../../database/models';
 
 import * as yup from 'yup';
 import { userProviders } from '../../database/providers/Users';
+import { PasswordCrypto } from '../../shared/services';
 
 type typeBodyProps = Omit<typeUser, 'first_name' | 'last_name' | 'cpf' | 'email' | 'id'>;
 
@@ -28,7 +29,9 @@ export const login = async (req: Request<{}, {}, typeUser>, res: Response) => {
         });
     }
 
-    if (password_hash !== result.password_hash) {
+    const passwordMatch = await PasswordCrypto.verifyPassword(password_hash, result.password_hash);
+
+    if (!passwordMatch) {
         return res.status(401).json({
             errors: {
                 default: 'E-mail ou senha inválidos.',
