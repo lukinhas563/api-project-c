@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ColaboratorsController, UsersController, HomeController } from '../controllers';
+import { ensureAuthenticated } from '../shared/middlewares';
 
 const route = Router();
 
@@ -11,20 +12,33 @@ route.post('/register', UsersController.createUserValidation, UsersController.cr
 route.post('/login', UsersController.loginValidation, UsersController.login);
 
 // COLABORATORS
-route.get('/colaborators', ColaboratorsController.getAllValidation, ColaboratorsController.getAll);
+route.get(
+    '/colaborators',
+    ensureAuthenticated,
+    ColaboratorsController.getAllValidation,
+    ColaboratorsController.getAll,
+);
 route.get(
     '/colaborators/:id',
+    ensureAuthenticated,
     ColaboratorsController.getByIdValidation,
     ColaboratorsController.getById,
 );
-route.post('/colaborators', ColaboratorsController.createValidation, ColaboratorsController.create);
+route.post(
+    '/colaborators',
+    ensureAuthenticated,
+    ColaboratorsController.createValidation,
+    ColaboratorsController.create,
+);
 route.put(
     '/colaborators/:id',
+    ensureAuthenticated,
     ColaboratorsController.updateByIdValidation,
     ColaboratorsController.updateById,
 );
 route.delete(
     '/colaborators/:id',
+    ensureAuthenticated,
     ColaboratorsController.deleteByIdValidation,
     ColaboratorsController.deleteById,
 );
