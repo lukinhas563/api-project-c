@@ -47,7 +47,11 @@ export const updateById = async (
         });
     }
 
-    const result = await colaboratorsProviders.update(req.body, Number(req.params.id));
+    const result = await colaboratorsProviders.update(
+        req.body,
+        Number(req.params.id),
+        Number(req.headers.IdUser),
+    );
 
     if (result instanceof Error) {
         return res.status(500).json({

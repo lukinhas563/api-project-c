@@ -11,13 +11,25 @@ describe('Colaborators - Delete', () => {
             password_hash: '5as4d6as54d65ggas',
         });
 
-        const createColaborator = await testServer.post('/colaborators').send({
-            first_name: 'Lucas',
-            last_name: 'Montenegro',
-            cpf: '11111111111',
-            email: 'lucasmontenegro@email.com',
-            id_user: 1,
+        const loginUser = await testServer.post('/login').send({
+            user_name: 'lucassilva2',
+            password_hash: '5as4d6as54d65ggas',
         });
+
+        const token = loginUser.body.accessToken;
+
+        const createColaborator = await testServer
+            .post('/colaborators')
+            .set('Content-Type', 'application/json')
+            .set('User-Agent', 'insomnia/8.6.1')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                first_name: 'Lucas',
+                last_name: 'Montenegro',
+                cpf: '11111111111',
+                email: 'lucasmontenegro@email.com',
+                id_user: 1,
+            });
 
         const res1 = await testServer.delete('/colaborators/1').send();
 

@@ -11,13 +11,23 @@ describe('Colaborators - Create', () => {
             password_hash: '5as4d6as54d65ggas',
         });
 
-        const res1 = await testServer.post('/colaborators').send({
-            first_name: 'Lucas',
-            last_name: 'Montenegro',
-            cpf: '11111111111',
-            email: 'lucasmontenegro@email.com',
-            id_user: 1,
+        const loginUser = await testServer.post('/login').send({
+            user_name: 'lucassilva2',
+            password_hash: '5as4d6as54d65ggas',
         });
+
+        const token = loginUser.body.accessToken;
+
+        const res1 = await testServer
+            .post('/colaborators')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                first_name: 'Lucas',
+                last_name: 'Montenegro',
+                cpf: '11111111111',
+                email: 'lucasmontenegro@email.com',
+                id_user: 1,
+            });
 
         expect(res1.statusCode).toEqual(201);
         expect(typeof res1.body).toBe('object');

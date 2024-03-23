@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
-import * as yup from 'yup';
 import { colaboratorsProviders } from '../../database/providers/Colaborators';
+import * as yup from 'yup';
 
 const paramsPropSchema = yup.object({
     id: yup.number().integer().optional().moreThan(0),
@@ -22,7 +22,10 @@ export const deleteById = async (req: Request<typeParamsProps>, res: Response) =
         });
     }
 
-    const result = await colaboratorsProviders.deleteById(Number(req.params.id));
+    const result = await colaboratorsProviders.deleteById(
+        Number(req.params.id),
+        Number(req.headers.IdUser),
+    );
 
     if (result instanceof Error) {
         return res.status(500).json({

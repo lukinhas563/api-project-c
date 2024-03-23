@@ -4,8 +4,9 @@ import { typeColaborator } from '../../database/models';
 import { colaboratorsProviders } from '../../database/providers/Colaborators';
 import * as yup from 'yup';
 
-type typeBodyColaborator = Omit<typeColaborator, 'id'>;
+type typeBodyColaborator = Omit<typeColaborator, 'id' | 'id_user'>;
 
+// VALIDATION BODY OF CREATE
 export const createValidation = validation((getSchema) => ({
     body: getSchema<typeBodyColaborator>(
         yup.object({
@@ -14,13 +15,15 @@ export const createValidation = validation((getSchema) => ({
             last_name: yup.string().optional().min(3).max(150),
             cpf: yup.string().optional().min(11),
             email: yup.string().optional().email().min(5),
-            id_user: yup.number().integer().required(),
         }),
     ),
 }));
 
 export const create = async (req: Request<{}, {}, typeBodyColaborator>, res: Response) => {
-    const result = await colaboratorsProviders.create(req.body);
+    const result = await colaboratorsProviders.create({
+        ...req.body,
+        id_user: Number(req.headers.IdUser),
+    });
 
     if (result instanceof Error) {
         return res.status(500).json({

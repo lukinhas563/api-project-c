@@ -6,7 +6,7 @@ import { typeUser } from '../../models';
 export const create = async (user: Omit<typeUser, 'id'>) => {
     try {
         const hashedPassword = await PasswordCrypto.hashPassword(user.password_hash);
-        console.log(hashedPassword);
+
         const [result] = await Knex(EnumTableNames.users)
             .insert({ ...user, password_hash: hashedPassword })
             .returning('id');

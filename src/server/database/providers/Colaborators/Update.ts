@@ -3,12 +3,14 @@ import { Knex } from '../../knex';
 import { typeColaborator } from '../../models';
 
 export const update = async (
-    colaborator: Partial<Omit<typeColaborator, 'id' | 'id_user'>>,
+    colaborator: Partial<Omit<typeColaborator, 'id'>>,
     id: number,
+    idUser: number,
 ): Promise<void | Error> => {
     try {
         const result = await Knex(EnumTableNames.colaborators)
             .where('id', '=', id)
+            .andWhere('id_user', '=', idUser)
             .update(colaborator);
 
         if (result > 0) return;

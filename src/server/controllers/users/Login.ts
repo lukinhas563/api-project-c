@@ -4,7 +4,7 @@ import { typeUser } from '../../database/models';
 
 import * as yup from 'yup';
 import { userProviders } from '../../database/providers/Users';
-import { PasswordCrypto } from '../../shared/services';
+import { JWTService, PasswordCrypto } from '../../shared/services';
 
 type typeBodyProps = Omit<typeUser, 'first_name' | 'last_name' | 'cpf' | 'email' | 'id'>;
 
@@ -19,6 +19,7 @@ export const loginValidation = validation((getSchema) => ({
 
 export const login = async (req: Request<{}, {}, typeUser>, res: Response) => {
     const { user_name, password_hash } = req.body;
+
     const result = await userProviders.getByUsername(user_name);
 
     if (result instanceof Error) {
@@ -38,6 +39,16 @@ export const login = async (req: Request<{}, {}, typeUser>, res: Response) => {
             },
         });
     } else {
-        return res.status(200).json({ accessToken: 'TOKEN.TEST' });
+        const accessToken = JWTService.sign({ uid: result.id });
+
+        if (accessToken === 'JWT_SECRET_NOT_FOUND') {
+            return res.status(500).json({
+                errors: {
+                    default: 'Erro ao gerar o token de acesso.',
+                },
+            });
+        }
+
+        return res.status(200).json({ accessToken: accessToken });
     }
 };

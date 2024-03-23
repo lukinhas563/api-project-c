@@ -1,12 +1,19 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
 
-export const getAll = async (page: number, limit: number, filter: string, id = 0) => {
+export const getAll = async (
+    page: number,
+    limit: number,
+    filter: string,
+    IdUser: number,
+    id = 0,
+) => {
     try {
         const result = await Knex(EnumTableNames.colaborators)
             .select('*')
             .where('id', id)
             .orWhere('first_name', 'like', `%${filter}%`)
+            .andWhere('id_user', IdUser)
             .offset((page - 1) * limit)
             .limit(limit);
 

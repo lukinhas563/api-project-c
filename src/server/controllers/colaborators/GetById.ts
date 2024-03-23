@@ -9,18 +9,9 @@ const paramsPropSchema = yup.object({
 });
 
 type typeParamsProps = yup.InferType<typeof paramsPropSchema>;
-type typeBodyProps = Omit<
-    typeColaborator,
-    'photo' | 'first_name' | 'last_name' | 'cpf' | 'email' | 'id'
->;
 
 export const getByIdValidation = validation((getSchema) => ({
     params: getSchema<typeParamsProps>(paramsPropSchema),
-    body: getSchema<typeBodyProps>(
-        yup.object({
-            id_user: yup.number().required().integer().moreThan(0),
-        }),
-    ),
 }));
 
 export const getById = async (req: Request<typeParamsProps>, res: Response) => {
@@ -31,7 +22,7 @@ export const getById = async (req: Request<typeParamsProps>, res: Response) => {
             },
         });
 
-    const result = await colaboratorsProviders.getById(req.params.id, req.body.id_user);
+    const result = await colaboratorsProviders.getById(req.params.id, Number(req.headers.IdUser));
 
     if (result instanceof Error) {
         return res.status(500).json({

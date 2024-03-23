@@ -1,10 +1,11 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
 
-export const count = async (filter = '') => {
+export const count = async (filter = '', IdUser: number) => {
     try {
         const [{ count }] = await Knex(EnumTableNames.colaborators)
             .where('first_name', 'like', `%${filter}%`)
+            .andWhere('id_user', IdUser)
             .count<[{ count: number }]>('* as count');
 
         if (Number.isInteger(Number(count))) return Number(count);

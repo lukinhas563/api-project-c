@@ -3,6 +3,7 @@ import { validation } from '../../shared/middlewares';
 import { colaboratorsProviders } from '../../database/providers/Colaborators';
 import * as yup from 'yup';
 
+// VALIDADE QUERY
 const queryPropSchema = yup.object({
     id: yup.number().notRequired(),
     page: yup.number().notRequired().moreThan(0),
@@ -16,17 +17,20 @@ export const getAllValidation = validation((getSchema) => ({
     query: getSchema<typeQueryProps>(queryPropSchema),
 }));
 
+// MAKE THE COLABORATOR
 export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Response) => {
     const page = req.query.page;
     const limit = req.query.limit;
     const filter = req.query.filter;
 
+    // Function get all colaborator
     const result = await colaboratorsProviders.getAll(
         Number(page) || 1,
         Number(limit) || 10,
         filter || '',
+        Number(req.headers.IdUser),
     );
-    const count = await colaboratorsProviders.count(filter || '');
+    const count = await colaboratorsProviders.count(filter || '', Number(req.headers.IdUser));
 
     if (result instanceof Error) {
         return res.status(500).json({
@@ -42,6 +46,7 @@ export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Resp
         });
     }
 
+    // Set total colaborators on table
     res.setHeader('access-control-expose-headers', 'x-total-count');
     res.setHeader('x-total-count', count);
 
