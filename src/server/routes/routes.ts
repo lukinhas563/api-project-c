@@ -8,7 +8,7 @@ route.get('/', HomeController.get);
 
 // USERS
 route.post('/register', UsersController.createUserValidation, UsersController.create);
-route.post('/login', UsersController.getByIdValidation, UsersController.getById);
+route.post('/login', UsersController.loginValidation, UsersController.login);
 
 // COLABORATORS
 route.get('/colaborators', ColaboratorsController.getAllValidation, ColaboratorsController.getAll);

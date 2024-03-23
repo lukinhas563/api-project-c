@@ -7,7 +7,7 @@ import { userProviders } from '../../database/providers/Users';
 
 type typeBodyProps = Omit<typeUser, 'first_name' | 'last_name' | 'cpf' | 'email' | 'id'>;
 
-export const getByIdValidation = validation((getSchema) => ({
+export const loginValidation = validation((getSchema) => ({
     body: getSchema<typeBodyProps>(
         yup.object({
             user_name: yup.string().required().min(3),
@@ -16,7 +16,7 @@ export const getByIdValidation = validation((getSchema) => ({
     ),
 }));
 
-export const getById = async (req: Request<{}, {}, typeUser>, res: Response) => {
+export const login = async (req: Request<{}, {}, typeUser>, res: Response) => {
     const { user_name, password_hash } = req.body;
     const result = await userProviders.getByUsername(user_name);
 
