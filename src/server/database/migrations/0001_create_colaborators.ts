@@ -6,10 +6,10 @@ export async function up(knex: Knex) {
         .createTable(EnumTableNames.colaborators, (table) => {
             table.increments('id').unsigned().primary();
             table.string('photo', 255);
-            table.string('first_name', 150).notNullable();
-            table.string('last_name', 150);
-            table.string('cpf', 11);
-            table.string('email', 255);
+            table.string('first_name', 150).notNullable().checkLength('>=', 3);
+            table.string('last_name', 150).checkLength('>=', 3);
+            table.string('cpf', 11).checkLength('>', 10);
+            table.string('email', 255).checkLength('>', 6);
             table.integer('id_user').unsigned();
 
             table.foreign('id_user').references('users.id').onDelete('CASCADE').onUpdate('CASCADE');
@@ -25,6 +25,6 @@ export async function up(knex: Knex) {
 
 export async function down(knex: Knex) {
     return knex.schema
-        .dropTable(EnumTableNames.users)
+        .dropTable(EnumTableNames.colaborators)
         .then(() => console.log(`# Dropped table ${EnumTableNames.colaborators}`));
 }
