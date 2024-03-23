@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
 import { typeUser } from '../../database/models';
-import * as yup from 'yup';
 import { userProviders } from '../../database/providers/Users';
+
+import * as yup from 'yup';
 
 type typeBodyUser = Omit<typeUser, 'id'>;
 
 export const createUserValidation = validation((getSchema) => ({
     body: getSchema<typeBodyUser>(
         yup.object({
-            user_name: yup.string().required().min(3),
-            first_name: yup.string().required().min(3),
-            last_name: yup.string().required().min(3),
+            user_name: yup.string().required().min(3).max(150),
+            first_name: yup.string().required().min(3).max(150),
+            last_name: yup.string().required().min(3).max(150),
             cpf: yup.string().required().min(11),
-            email: yup.string().email().required().min(3),
-            password_hash: yup.string().required().min(3),
+            email: yup.string().email().required().min(7).max(150),
+            password_hash: yup.string().required().min(3).max(150),
         }),
     ),
 }));

@@ -10,10 +10,10 @@ export const createValidation = validation((getSchema) => ({
     body: getSchema<typeBodyColaborator>(
         yup.object({
             photo: yup.string().optional(),
-            first_name: yup.string().required().min(3),
-            last_name: yup.string().optional().min(3),
+            first_name: yup.string().required().min(3).max(150),
+            last_name: yup.string().optional().min(3).max(150),
             cpf: yup.string().optional().min(11),
-            email: yup.string().optional().email(),
+            email: yup.string().optional().email().min(5),
             id_user: yup.number().integer().required(),
         }),
     ),
