@@ -3,7 +3,7 @@ import { EnumTableNames } from '../ETablesNames';
 
 export async function up(knex: Knex) {
     return knex.schema
-        .createTable(EnumTableNames.colaborators, (table) => {
+        .createTable(EnumTableNames.collaborators, (table) => {
             table.increments('id').unsigned().primary().index();
             table.string('photo', 255);
             table.string('first_name', 150).notNullable().checkLength('>=', 3);
@@ -19,12 +19,12 @@ export async function up(knex: Knex) {
             table.comment('Table for config colaborators');
         })
         .then(() => {
-            console.log(`# Create table ${EnumTableNames.colaborators}`);
+            console.log(`# Create table ${EnumTableNames.collaborators}`);
         });
 }
 
 export async function down(knex: Knex) {
     return knex.schema
-        .dropTable(EnumTableNames.colaborators)
-        .then(() => console.log(`# Dropped table ${EnumTableNames.colaborators}`));
+        .dropTable(EnumTableNames.collaborators)
+        .then(() => console.log(`# Dropped table ${EnumTableNames.collaborators}`));
 }

@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { CollaboratorsController, UsersController, HomeController } from '../controllers';
+import {
+    CollaboratorsController,
+    UsersController,
+    HomeController,
+    CompaniesControllers,
+} from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
 const route = Router();
@@ -41,6 +46,38 @@ route.delete(
     ensureAuthenticated,
     CollaboratorsController.deleteByIdValidation,
     CollaboratorsController.deleteById,
+);
+
+// COMPANIES
+route.get(
+    '/companies',
+    ensureAuthenticated,
+    CompaniesControllers.getAllValidation,
+    CompaniesControllers.getAll,
+);
+route.get(
+    '/companies/:id',
+    ensureAuthenticated,
+    CompaniesControllers.getByIdValidation,
+    CompaniesControllers.getById,
+);
+route.post(
+    '/companies',
+    ensureAuthenticated,
+    CompaniesControllers.createValidation,
+    CompaniesControllers.create,
+);
+route.put(
+    '/companies/:id',
+    ensureAuthenticated,
+    CompaniesControllers.updateByIdValidation,
+    CompaniesControllers.updateById,
+);
+route.delete(
+    '/companies/:id',
+    ensureAuthenticated,
+    CompaniesControllers.deleteByIdValidation,
+    CompaniesControllers.deleteById,
 );
 
 export default route;

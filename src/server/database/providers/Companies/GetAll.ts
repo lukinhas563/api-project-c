@@ -6,19 +6,21 @@ export const getAll = async (
     limit: number,
     filter: string,
     IdUser: number,
+    idCollaborator: number,
     id = 0,
 ) => {
     try {
-        const result = await Knex(EnumTableNames.collaborators)
+        const result = await Knex(EnumTableNames.companies)
             .select('*')
             .where('id', id)
-            .orWhere('first_name', 'like', `%${filter}%`)
+            .orWhere('company_name', 'like', `%${filter}%`)
             .andWhere('id_user', IdUser)
+            .andWhere('id_collaborator', '=', idCollaborator)
             .offset((page - 1) * limit)
             .limit(limit);
 
         if (id > 0 && result.every((item) => item.id !== id)) {
-            const resultById = await Knex(EnumTableNames.collaborators)
+            const resultById = await Knex(EnumTableNames.companies)
                 .select('*')
                 .where('id', '=', id)
                 .first();

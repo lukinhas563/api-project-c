@@ -1,4 +1,5 @@
 export enum EnumTableNames {
     users = 'users',
-    colaborators = 'colaborators',
+    collaborators = 'collaborators',
+    companies = 'companies',
 }

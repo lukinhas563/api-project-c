@@ -1,16 +1,18 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
-import { typeCollaborator } from '../../models';
+import { typeCompany } from '../../models';
 
 export const getById = async (
-    idColaborator: number,
+    idCompany: number,
     idUser: number,
-): Promise<typeCollaborator | Error> => {
+    idCollaborator: number,
+): Promise<typeCompany | Error> => {
     try {
-        const result = await Knex(EnumTableNames.collaborators)
+        const result = await Knex(EnumTableNames.companies)
             .select('*')
-            .where('id', '=', idColaborator)
+            .where('id', '=', idCompany)
             .andWhere('id_user', '=', idUser)
+            .andWhere('id_collaborator', '=', idCollaborator)
             .first();
 
         if (result) return result;

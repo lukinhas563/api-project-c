@@ -3,8 +3,8 @@ import { Knex } from '../../knex';
 
 export const count = async (filter = '', IdUser: number) => {
     try {
-        const [{ count }] = await Knex(EnumTableNames.collaborators)
-            .where('first_name', 'like', `%${filter}%`)
+        const [{ count }] = await Knex(EnumTableNames.companies)
+            .where('company_name', 'like', `%${filter}%`)
             .andWhere('id_user', IdUser)
             .count<[{ count: number }]>('* as count');
 

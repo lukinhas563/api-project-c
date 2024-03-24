@@ -1,10 +1,10 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
 
-export const deleteById = async (colaboratorId: number, IdUser: number): Promise<void | Error> => {
+export const deleteById = async (companyId: number, IdUser: number): Promise<void | Error> => {
     try {
-        const result = await Knex(EnumTableNames.collaborators)
-            .where('id', '=', colaboratorId)
+        const result = await Knex(EnumTableNames.companies)
+            .where('id', '=', companyId)
             .andWhere('id_user', '=', IdUser)
             .del();
 

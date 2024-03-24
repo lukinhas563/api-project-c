@@ -1,17 +1,19 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
-import { typeCollaborator } from '../../models';
+import { typeCompany } from '../../models';
 
 export const update = async (
-    colaborator: Partial<Omit<typeCollaborator, 'id'>>,
+    company: Partial<Omit<typeCompany, 'id'>>,
     id: number,
     idUser: number,
+    idCollaborator: number,
 ): Promise<void | Error> => {
     try {
-        const result = await Knex(EnumTableNames.collaborators)
+        const result = await Knex(EnumTableNames.companies)
             .where('id', '=', id)
             .andWhere('id_user', '=', idUser)
-            .update(colaborator);
+            .andWhere('id_collaborator', '=', idCollaborator)
+            .update(company);
 
         if (result > 0) return;
 

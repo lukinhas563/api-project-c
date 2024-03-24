@@ -1,14 +1,10 @@
 import { EnumTableNames } from '../../ETablesNames';
-import { typeCollaborator } from '../../models';
+import { typeCompany } from '../../models';
 import { Knex } from '../../knex';
 
-export const create = async (
-    colaborator: Omit<typeCollaborator, 'id'>,
-): Promise<number | Error> => {
+export const create = async (company: Omit<typeCompany, 'id'>): Promise<number | Error> => {
     try {
-        const [result] = await Knex(EnumTableNames.collaborators)
-            .insert(colaborator)
-            .returning('id');
+        const [result] = await Knex(EnumTableNames.companies).insert(company).returning('id');
 
         if (typeof result === 'object') {
             return result.id;
