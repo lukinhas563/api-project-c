@@ -4,7 +4,7 @@ import { EnumTableNames } from '../ETablesNames';
 export async function up(knex: Knex) {
     return knex.schema
         .createTable(EnumTableNames.colaborators, (table) => {
-            table.increments('id').unsigned().primary();
+            table.increments('id').unsigned().primary().index();
             table.string('photo', 255);
             table.string('first_name', 150).notNullable().checkLength('>=', 3);
             table.string('last_name', 150).checkLength('>=', 3);
