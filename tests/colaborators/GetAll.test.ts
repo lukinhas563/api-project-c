@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Collaborators - Delete', () => {
+describe('Collaborators - Get all', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -66,6 +66,26 @@ describe('Collaborators - Delete', () => {
         expect(res.status).toBe(200);
         expect(res.body).toHaveProperty('result');
         expect(res.headers).toHaveProperty('x-total-count');
+        expect(Array.isArray(res.body.result)).toBe(true);
+        expect(res.body.result).toHaveLength(3);
+        expect(res.body.result[0]).toBeInstanceOf(Object);
+        expect(res.body.result[1]).toBeInstanceOf(Object);
+        expect(res.body.result[2]).toBeInstanceOf(Object);
+    });
+
+    test('Should get correct infos', async () => {
+        const res = await testServer
+            .get(`/collaborators?page=1&limit=2`)
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send();
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveProperty('result');
+        expect(res.headers).toHaveProperty('x-total-count');
+        expect(Array.isArray(res.body.result)).toBe(true);
+        expect(res.body.result).toHaveLength(2);
+        expect(res.body.result[0]).toBeInstanceOf(Object);
+        expect(res.body.result[1]).toBeInstanceOf(Object);
     });
 
     test('Should not get all without a token', async () => {

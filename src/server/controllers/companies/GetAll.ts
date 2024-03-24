@@ -27,6 +27,14 @@ export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Resp
     const filter = req.query.filter;
     const idCollaborator = req.query.idCollaborator;
 
+    if (!req.query.idCollaborator) {
+        return res.status(400).json({
+            errors: {
+                default: 'O parâmetro "idCollaborator" precisa ser informado.',
+            },
+        });
+    }
+
     // Function get all colaborator
     const result = await companiesProviders.getAll(
         Number(page) || 1,

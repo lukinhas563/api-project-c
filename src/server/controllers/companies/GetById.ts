@@ -39,12 +39,13 @@ export const getById = async (
             },
         });
 
-    if (!req.query.idCollaborator)
+    if (!req.query.idCollaborator) {
         return res.status(400).json({
             errors: {
                 default: 'O parâmetro "idCollaborator" precisa ser informado.',
             },
         });
+    }
 
     const result = await companiesProviders.getById(
         req.params.id,

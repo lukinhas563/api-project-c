@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Collaborators - Delete', () => {
+describe('Collaborators - Get by id', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -71,6 +71,7 @@ describe('Collaborators - Delete', () => {
         expect(res.body).toHaveProperty('result.id_user');
         expect(res.body).toHaveProperty('result.created_at');
         expect(res.body).toHaveProperty('result.updated_at');
+        expect(res.body).toBeInstanceOf(Object);
     });
 
     test('Should not get all without a token', async () => {

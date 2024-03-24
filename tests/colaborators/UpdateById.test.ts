@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Collaborators - Delete', () => {
+describe('Collaborators - Update', () => {
     let accessToken = '';
 
     beforeAll(async () => {
