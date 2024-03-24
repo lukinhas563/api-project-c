@@ -5,7 +5,7 @@ import * as getById from './GetById';
 import * as getAll from './GetAll';
 import * as count from './Count';
 
-export const colaboratorsProviders = {
+export const collaboratorsProviders = {
     ...create,
     ...deleteById,
     ...updateById,

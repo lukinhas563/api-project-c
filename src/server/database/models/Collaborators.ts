@@ -1,4 +1,4 @@
-export type typeColaborator = {
+export type typeCollaborator = {
     id: number;
     photo?: string;
     first_name: string;

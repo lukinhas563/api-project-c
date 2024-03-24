@@ -1,38 +1,65 @@
 import { testServer } from '../jest.setup';
 
-describe('Colaborators - Delete', () => {
-    test('Should delete a colaborator', async () => {
-        const createUser = await testServer.post('/register').send({
-            user_name: 'lucassilva2',
-            first_name: 'Lucas',
-            last_name: 'Silva',
-            cpf: '55555555555',
-            email: 'lucassilva2@email.com',
-            password_hash: '5as4d6as54d65ggas',
+describe('Collaborators - Delete', () => {
+    let accessToken = '';
+    let idCollaborator = '';
+
+    beforeAll(async () => {
+        await testServer.post('/register').send({
+            user_name: 'testserver',
+            first_name: 'Test',
+            last_name: 'Server',
+            cpf: '12345678911',
+            email: 'test-server@email.com',
+            password_hash: '1234567',
         });
 
         const loginUser = await testServer.post('/login').send({
-            user_name: 'lucassilva2',
-            password_hash: '5as4d6as54d65ggas',
+            user_name: 'testserver',
+            password_hash: '1234567',
         });
 
-        const token = loginUser.body.accessToken;
+        accessToken = loginUser.body.accessToken;
 
-        const createColaborator = await testServer
-            .post('/colaborators')
-            .set('Content-Type', 'application/json')
-            .set('User-Agent', 'insomnia/8.6.1')
-            .set('Authorization', `Bearer ${token}`)
+        const collaborator = await testServer
+            .post('/collaborators')
+            .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 first_name: 'Lucas',
                 last_name: 'Montenegro',
-                cpf: '11111111111',
+                cpf: '78954252151',
                 email: 'lucasmontenegro@email.com',
-                id_user: 1,
             });
 
-        const res1 = await testServer.delete('/colaborators/1').send();
+        idCollaborator = collaborator.body.return;
+    });
 
-        expect(res1.status).toEqual(201);
+    test('Should delete a collaborator', async () => {
+        const res = await testServer
+            .delete(`/collaborators/${idCollaborator}`)
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send();
+
+        console.log(idCollaborator);
+
+        expect(res.status).toBe(201);
+        expect(res.body).toHaveProperty('result');
+    });
+
+    test('Should not delete an nonexistent collaborator', async () => {
+        const res = await testServer
+            .delete(`/collaborators/199`)
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send();
+
+        expect(res.status).toBe(500);
+        expect(res.body).toHaveProperty('errors.default');
+    });
+
+    test('Should not delete without a token', async () => {
+        const res = await testServer.delete(`/collaborators/${idCollaborator}`);
+
+        expect(res.statusCode).toEqual(401);
+        expect(res.body).toHaveProperty('errors.default');
     });
 });

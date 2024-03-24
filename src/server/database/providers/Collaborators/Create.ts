@@ -1,8 +1,10 @@
 import { EnumTableNames } from '../../ETablesNames';
-import { typeColaborator } from '../../models';
+import { typeCollaborator } from '../../models';
 import { Knex } from '../../knex';
 
-export const create = async (colaborator: Omit<typeColaborator, 'id'>): Promise<number | Error> => {
+export const create = async (
+    colaborator: Omit<typeCollaborator, 'id'>,
+): Promise<number | Error> => {
     try {
         const [result] = await Knex(EnumTableNames.colaborators)
             .insert(colaborator)

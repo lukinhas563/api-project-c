@@ -1,3 +1,3 @@
-export * from './colaborators';
+export * from './collaborators';
 export * from './users';
 export * from './home';

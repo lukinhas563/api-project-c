@@ -20,7 +20,7 @@ describe('Login - SingIn a user', () => {
         expect(loginUser.body).toHaveProperty('accessToken');
     });
 
-    test('Should do not connected', async () => {
+    test('Should not connect', async () => {
         const createUser = await testServer.post('/register').send({
             user_name: 'lucassilva2',
             first_name: 'Lucas',

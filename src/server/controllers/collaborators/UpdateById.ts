@@ -1,15 +1,18 @@
 import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
-import { typeColaborator } from '../../database/models';
-import * as yup from 'yup';
-import { colaboratorsProviders } from '../../database/providers/Colaborators';
+import { typeCollaborator } from '../../database/models';
+import { collaboratorsProviders } from '../../database/providers/Collaborators';
 
+import * as yup from 'yup';
+
+//  TYPE PARAMS
 type typeParamsProps = {
     id?: number;
 };
 
-type typeBodyProps = Partial<Omit<typeColaborator, 'id' | 'id_user'>>;
+type typeBodyProps = Partial<Omit<typeCollaborator, 'id' | 'id_user'>>;
 
+// PARAMS AND BODY VALIDATION
 export const updateByIdValidation = validation((getSchema) => ({
     params: getSchema<typeParamsProps>(
         yup.object({
@@ -27,10 +30,12 @@ export const updateByIdValidation = validation((getSchema) => ({
     ),
 }));
 
+// UPDATE INFOS OF A COLLABORATORS
 export const updateById = async (
     req: Request<typeParamsProps, {}, typeBodyProps>,
     res: Response,
 ) => {
+    // Check there are a body
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({
             error: {
@@ -39,6 +44,7 @@ export const updateById = async (
         });
     }
 
+    // Check there are a id
     if (!req.params.id) {
         return res.status(400).json({
             errors: {
@@ -47,12 +53,13 @@ export const updateById = async (
         });
     }
 
-    const result = await colaboratorsProviders.update(
+    const result = await collaboratorsProviders.update(
         req.body,
         Number(req.params.id),
         Number(req.headers.IdUser),
     );
 
+    // Check there are a error
     if (result instanceof Error) {
         return res.status(500).json({
             errors: {

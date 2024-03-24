@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ColaboratorsController, UsersController, HomeController } from '../controllers';
+import { CollaboratorsController, UsersController, HomeController } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
 const route = Router();
@@ -11,36 +11,36 @@ route.get('/', HomeController.get);
 route.post('/register', UsersController.createUserValidation, UsersController.create);
 route.post('/login', UsersController.loginValidation, UsersController.login);
 
-// COLABORATORS
+// COLLABORATORS
 route.get(
-    '/colaborators',
+    '/collaborators',
     ensureAuthenticated,
-    ColaboratorsController.getAllValidation,
-    ColaboratorsController.getAll,
+    CollaboratorsController.getAllValidation,
+    CollaboratorsController.getAll,
 );
 route.get(
-    '/colaborators/:id',
+    '/collaborators/:id',
     ensureAuthenticated,
-    ColaboratorsController.getByIdValidation,
-    ColaboratorsController.getById,
+    CollaboratorsController.getByIdValidation,
+    CollaboratorsController.getById,
 );
 route.post(
-    '/colaborators',
+    '/collaborators',
     ensureAuthenticated,
-    ColaboratorsController.createValidation,
-    ColaboratorsController.create,
+    CollaboratorsController.createValidation,
+    CollaboratorsController.create,
 );
 route.put(
-    '/colaborators/:id',
+    '/collaborators/:id',
     ensureAuthenticated,
-    ColaboratorsController.updateByIdValidation,
-    ColaboratorsController.updateById,
+    CollaboratorsController.updateByIdValidation,
+    CollaboratorsController.updateById,
 );
 route.delete(
-    '/colaborators/:id',
+    '/collaborators/:id',
     ensureAuthenticated,
-    ColaboratorsController.deleteByIdValidation,
-    ColaboratorsController.deleteById,
+    CollaboratorsController.deleteByIdValidation,
+    CollaboratorsController.deleteById,
 );
 
 export default route;

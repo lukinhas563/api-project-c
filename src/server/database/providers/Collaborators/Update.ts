@@ -1,9 +1,9 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
-import { typeColaborator } from '../../models';
+import { typeCollaborator } from '../../models';
 
 export const update = async (
-    colaborator: Partial<Omit<typeColaborator, 'id'>>,
+    colaborator: Partial<Omit<typeCollaborator, 'id'>>,
     id: number,
     idUser: number,
 ): Promise<void | Error> => {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares';
-import { colaboratorsProviders } from '../../database/providers/Colaborators';
+import { collaboratorsProviders } from '../../database/providers/Collaborators';
+
 import * as yup from 'yup';
 
 // VALIDADE QUERY
@@ -13,25 +14,28 @@ const queryPropSchema = yup.object({
 
 type typeQueryProps = yup.InferType<typeof queryPropSchema>;
 
+// QUERRY PARAMETER VALIDATION
 export const getAllValidation = validation((getSchema) => ({
     query: getSchema<typeQueryProps>(queryPropSchema),
 }));
 
-// MAKE THE COLABORATOR
+// GET ALL COLABORATORS
 export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Response) => {
     const page = req.query.page;
     const limit = req.query.limit;
     const filter = req.query.filter;
 
     // Function get all colaborator
-    const result = await colaboratorsProviders.getAll(
+    const result = await collaboratorsProviders.getAll(
         Number(page) || 1,
         Number(limit) || 10,
         filter || '',
         Number(req.headers.IdUser),
     );
-    const count = await colaboratorsProviders.count(filter || '', Number(req.headers.IdUser));
+    // Count all collaborators
+    const count = await collaboratorsProviders.count(filter || '', Number(req.headers.IdUser));
 
+    // Verify instance of Error
     if (result instanceof Error) {
         return res.status(500).json({
             errors: {

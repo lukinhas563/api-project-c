@@ -1,11 +1,11 @@
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
-import { typeColaborator } from '../../models';
+import { typeCollaborator } from '../../models';
 
 export const getById = async (
     idColaborator: number,
     idUser: number,
-): Promise<typeColaborator | Error> => {
+): Promise<typeCollaborator | Error> => {
     try {
         const result = await Knex(EnumTableNames.colaborators)
             .select('*')
