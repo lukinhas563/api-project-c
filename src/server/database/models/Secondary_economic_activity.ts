@@ -4,4 +4,5 @@ export type typeSecondary_economic_activity = {
     activity: string;
 
     id_company: number;
+    id_user: number;
 };

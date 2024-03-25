@@ -9,11 +9,15 @@ export async function up(knex: Knex) {
             table.string('activity', 150).notNullable().checkLength('>=', 3);
 
             table.integer('id_company').unsigned();
+            table.integer('id_user').unsigned();
+
             table
                 .foreign('id_company')
                 .references('companies.id')
                 .onDelete('CASCADE')
                 .onUpdate('CASCADE');
+
+            table.foreign('id_user').references('users.id').onDelete('CASCADE').onUpdate('CASCADE');
 
             table.timestamps(true, true);
 

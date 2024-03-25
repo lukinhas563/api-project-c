@@ -4,9 +4,9 @@ import {
     UsersController,
     HomeController,
     CompaniesControllers,
+    secondary_economic_activityController,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
-import { secondary_economic_activityController } from '../controllers/secondary_economic_activity';
 
 const route = Router();
 
@@ -82,11 +82,41 @@ route.delete(
 );
 
 // SECONDARY ECONOMIC ACTIVITY
+route.get(
+    '/activity/',
+    ensureAuthenticated,
+    secondary_economic_activityController.getAllValidation,
+    secondary_economic_activityController.getAll,
+);
+route.get(
+    '/activity/:id',
+    ensureAuthenticated,
+    secondary_economic_activityController.getByIdValidation,
+    secondary_economic_activityController.getById,
+);
+route.get(
+    '/activity/:id',
+    ensureAuthenticated,
+    secondary_economic_activityController.getByIdValidation,
+    secondary_economic_activityController.getById,
+);
 route.post(
-    '/economic',
+    '/activity',
     ensureAuthenticated,
     secondary_economic_activityController.createValidation,
     secondary_economic_activityController.create,
+);
+route.put(
+    '/activity/:id',
+    ensureAuthenticated,
+    secondary_economic_activityController.updateByIdValidation,
+    secondary_economic_activityController.updateById,
+);
+route.delete(
+    '/activity/:id',
+    ensureAuthenticated,
+    secondary_economic_activityController.deleteByIdValidation,
+    secondary_economic_activityController.deleteById,
 );
 
 export default route;

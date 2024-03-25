@@ -5,7 +5,7 @@ import { secondary_economic_activityProviders } from '../../database/providers/S
 
 import * as yup from 'yup';
 
-type typeBodyColaborator = Omit<typeSecondary_economic_activity, 'id'>;
+type typeBodyColaborator = Omit<typeSecondary_economic_activity, 'id' | 'id_user'>;
 
 // BODY VALIDATION
 export const createValidation = validation((getSchema) => ({
@@ -19,11 +19,15 @@ export const createValidation = validation((getSchema) => ({
 }));
 
 // CREATE A COLLABORATOR
-export const create = async (req: Request<{}, {}, typeBodyColaborator>, res: Response) => {
+export const create = async (
+    req: Request<{}, {}, typeSecondary_economic_activity>,
+    res: Response,
+) => {
     // Call the provider
     const result = await secondary_economic_activityProviders.create({
         ...req.body,
         id_company: Number(req.body.id_company),
+        id_user: Number(req.headers.IdUser),
     });
 
     // Verify instance of error
