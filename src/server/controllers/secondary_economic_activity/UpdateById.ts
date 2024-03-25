@@ -36,7 +36,7 @@ export const updateById = async (
     // Check there are a body
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({
-            error: {
+            errors: {
                 default: 'O corpo da requisição não pode estar vazio.',
             },
         });

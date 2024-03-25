@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Companies - Get by id', () => {
+describe('Activities - Create', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -79,57 +79,42 @@ describe('Companies - Get by id', () => {
             .send(companies[2]);
     });
 
-    test('Should get a company by id', async () => {
+    test('Should create a new activity for a company', async () => {
         const res = await testServer
-            .get(`/companies/1?idCollaborator=1`)
+            .post('/activity')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send();
+            .send({
+                code: '11.25.23',
+                activity: 'Limpeza e lavagem de carros',
+                id_company: 1,
+            });
 
-        expect(res.status).toBe(200);
-        expect(res.body).toBeInstanceOf(Object);
-
+        expect(res.statusCode).toEqual(201);
+        expect(typeof res.body).toBe('object');
         expect(res.body).toHaveProperty('result');
-        expect(res.body).toHaveProperty('result.id');
-        expect(res.body).toHaveProperty('result.company_name');
-        expect(res.body).toHaveProperty('result.fantasy_name');
-        expect(res.body).toHaveProperty('result.cnpj');
-        expect(res.body).toHaveProperty('result.size');
-        expect(res.body).toHaveProperty('result.tax_regime');
-        expect(res.body).toHaveProperty('result.opening_date');
-        expect(res.body).toHaveProperty('result.main_economic_activity');
-        expect(res.body).toHaveProperty('result.id_collaborator');
-        expect(res.body).toHaveProperty('result.id_user');
-        expect(res.body).toHaveProperty('result.created_at');
-        expect(res.body).toHaveProperty('result.updated_at');
-        expect(res.body).toHaveProperty('result.secondaryEconomicActivity');
-
-        expect(res.body.result.id).not.toBeNaN();
-        expect(res.body.result.id).not.toBeNull();
-        expect(res.body.result.id).not.toBeLessThan(0);
-
-        expect(res.body.result.id_collaborator).not.toBeNaN();
-        expect(res.body.result.id_collaborator).not.toBeNull();
-        expect(res.body.result.id_collaborator).not.toBeLessThan(0);
-
-        expect(res.body.result.id_user).not.toBeNaN();
-        expect(res.body.result.id_user).not.toBeNull();
-        expect(res.body.result.id_user).not.toBeLessThan(0);
     });
 
-    test('Should not get a company without the idCollaborator querry', async () => {
-        const res = await testServer
-            .get(`/companies/1`)
+    test('Should not create without a id_company', async () => {
+        const res1 = await testServer
+            .post('/activity')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send();
+            .send({
+                code: '11.25.23',
+                activity: 'Limpeza e lavagem de carros',
+            });
 
-        expect(res.statusCode).toEqual(400);
-        expect(res.body).toHaveProperty('errors.default');
+        expect(res1.statusCode).toEqual(400);
+        expect(typeof res1.body).toBe('object');
+        expect(res1.body).toHaveProperty('errors.body.id_company');
     });
 
-    test('Should not get all without a token', async () => {
-        const res = await testServer.get(`/companies/1?idCollaborator=1`).send();
+    test('Should not create without a token', async () => {
+        const res1 = await testServer.post('/activity').send({
+            code: '11.25.23',
+            activity: 'Limpeza e lavagem de carros',
+        });
 
-        expect(res.statusCode).toEqual(401);
-        expect(res.body).toHaveProperty('errors.default');
+        expect(res1.statusCode).toEqual(401);
+        expect(res1.body).toHaveProperty('errors.default');
     });
 });

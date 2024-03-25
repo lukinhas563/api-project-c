@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Companies - Get all', () => {
+describe('Activity - Update', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -77,77 +77,69 @@ describe('Companies - Get all', () => {
             .post('/companies')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[2]);
+
+        const activities = [
+            {
+                code: '11.25.23',
+                activity: 'Limpeza e lavagem de carros',
+                id_company: 1,
+            },
+            {
+                code: '20.35.40',
+                activity: 'Funilaria e armazenagem',
+                id_company: 1,
+            },
+            {
+                code: '30.40.55',
+                activity: 'Mecanica e venda',
+                id_company: 2,
+            },
+        ];
+
+        const activity1 = await testServer
+            .post('/activity')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(activities[0]);
+
+        const activity2 = await testServer
+            .post('/activity')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(activities[1]);
+
+        const activity3 = await testServer
+            .post('/activity')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(activities[2]);
     });
 
-    test('Should get all', async () => {
+    test('Should update a activity by id', async () => {
         const res = await testServer
-            .get(`/companies?idCollaborator=1`)
+            .put(`/activity/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send();
+            .send({
+                activity: 'Test Test Test',
+            });
 
         expect(res.status).toBe(200);
         expect(res.body).toHaveProperty('result');
-        expect(res.headers).toHaveProperty('x-total-count');
-
-        expect(res.body).toHaveProperty('result');
-        expect(Array.isArray(res.body.result)).toBe(true);
-        expect(res.body.result).toHaveLength(3);
-
-        expect(res.body.result[0]).toBeInstanceOf(Object);
-        expect(res.body.result[0]).toHaveProperty('id');
-        expect(res.body.result[0]).toHaveProperty('company_name');
-        expect(res.body.result[0]).toHaveProperty('fantasy_name');
-        expect(res.body.result[0]).toHaveProperty('cnpj');
-        expect(res.body.result[0]).toHaveProperty('email');
-        expect(res.body.result[0]).toHaveProperty('size');
-        expect(res.body.result[0]).toHaveProperty('tax_regime');
-        expect(res.body.result[0]).toHaveProperty('status');
-        expect(res.body.result[0]).toHaveProperty('opening_date');
-        expect(res.body.result[0]).toHaveProperty('main_economic_activity');
-        expect(res.body.result[0]).toHaveProperty('id_collaborator');
-        expect(res.body.result[0]).toHaveProperty('id_user');
-        expect(res.body.result[0]).toHaveProperty('created_at');
-        expect(res.body.result[0]).toHaveProperty('updated_at');
-        expect(res.body.result[0]).toHaveProperty('secondaryEconomicActivity');
-
-        expect(res.body.result[0].id).not.toBeNull();
-        expect(res.body.result[0].id).not.toBeNaN();
-
-        expect(res.body.result[0].id_collaborator).not.toBeNull();
-        expect(res.body.result[0].id_collaborator).not.toBeNaN();
-
-        expect(res.body.result[0].id_user).not.toBeNull();
-        expect(res.body.result[0].id_user).not.toBeNaN();
-
-        expect(Array.isArray(res.body.result[0].secondaryEconomicActivity)).toBe(true);
+        expect(res.body).toBeInstanceOf(Object);
     });
 
-    test('Should not get all without a querry params', async () => {
+    test('Should not update without a body', async () => {
         const res = await testServer
-            .get(`/companies?`)
+            .put(`/activity/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('errors.default');
+        expect(res.body).toBeInstanceOf(Object);
     });
 
-    test('Should get all corrects infos', async () => {
-        const res = await testServer
-            .get(`/companies?idCollaborator=1&page=1&limit=2`)
-            .set({ Authorization: `Bearer ${accessToken}` })
-            .send();
-
-        expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty('result');
-        expect(Array.isArray(res.body.result)).toBe(true);
-        expect(res.body.result).toHaveLength(2);
-        expect(res.body.result[0]).toBeInstanceOf(Object);
-        expect(res.body.result[1]).toBeInstanceOf(Object);
-    });
-
-    test('Should not get all without a token', async () => {
-        const res = await testServer.get(`/companies?idCollaborator=1`).send();
+    test('Should not update a collaborator without a token', async () => {
+        const res = await testServer.put(`/activity/1`).send({
+            activity: 'Test Test Test',
+        });
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toHaveProperty('errors.default');

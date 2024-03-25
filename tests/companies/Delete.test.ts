@@ -71,7 +71,7 @@ describe('Companies - Delete', () => {
     });
 
     test('Should not delete without a token', async () => {
-        const res = await testServer.delete(`/companies/${idCompany}`);
+        const res = await testServer.delete(`/companies/${idCompany}`).send();
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toHaveProperty('errors.default');
