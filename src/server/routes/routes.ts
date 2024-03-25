@@ -6,6 +6,7 @@ import {
     CompaniesControllers,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
+import { secondary_economic_activityController } from '../controllers/secondary_economic_activity';
 
 const route = Router();
 
@@ -78,6 +79,14 @@ route.delete(
     ensureAuthenticated,
     CompaniesControllers.deleteByIdValidation,
     CompaniesControllers.deleteById,
+);
+
+// SECONDARY ECONOMIC ACTIVITY
+route.post(
+    '/economic',
+    ensureAuthenticated,
+    secondary_economic_activityController.createValidation,
+    secondary_economic_activityController.create,
 );
 
 export default route;

@@ -1,3 +1,4 @@
+import { formattedResult } from '../../../shared/services';
 import { EnumTableNames } from '../../ETablesNames';
 import { Knex } from '../../knex';
 
@@ -11,11 +12,24 @@ export const getAll = async (
 ) => {
     try {
         const result = await Knex(EnumTableNames.companies)
-            .select('*')
-            .where('id', id)
-            .orWhere('company_name', 'like', `%${filter}%`)
-            .andWhere('id_user', IdUser)
-            .andWhere('id_collaborator', '=', idCollaborator)
+            .select(
+                'companies.*',
+                'secondary_economic_activity.id as economic_id',
+                'secondary_economic_activity.code',
+                'secondary_economic_activity.activity',
+                'secondary_economic_activity.id_company',
+                'secondary_economic_activity.created_at as economic_created_at',
+                'secondary_economic_activity.updated_at as economic_updated_at',
+            )
+            .leftJoin(
+                EnumTableNames.secondary_economic_activity,
+                'companies.id',
+                'secondary_economic_activity.id_company',
+            )
+            .where('companies.id', id)
+            .orWhere('companies.company_name', 'like', `%${filter}%`)
+            .andWhere('companies.id_user', IdUser)
+            .andWhere('companies.id_collaborator', '=', idCollaborator)
             .offset((page - 1) * limit)
             .limit(limit);
 
@@ -28,7 +42,9 @@ export const getAll = async (
             if (resultById) return [...result, resultById];
         }
 
-        return result;
+        const newFormat = formattedResult(result);
+
+        return newFormat;
     } catch (error) {
         console.log(error);
 
