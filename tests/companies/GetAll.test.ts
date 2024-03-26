@@ -109,6 +109,7 @@ describe('Companies - Get all', () => {
         expect(res.body.result[0]).toHaveProperty('created_at');
         expect(res.body.result[0]).toHaveProperty('updated_at');
         expect(res.body.result[0]).toHaveProperty('secondaryEconomicActivity');
+        expect(res.body.result[0]).toHaveProperty('partners');
 
         expect(res.body.result[0].id).not.toBeNull();
         expect(res.body.result[0].id).not.toBeNaN();
