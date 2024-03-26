@@ -9,4 +9,6 @@ export enum EnumTableNames {
 
     employees = 'employees',
     companies_employees = 'companies_employees',
+
+    address = 'address',
 }
