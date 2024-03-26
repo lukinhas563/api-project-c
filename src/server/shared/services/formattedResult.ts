@@ -22,6 +22,7 @@ export const formattedResult = (result: any[]) => {
                 updated_at: item.updated_at,
                 secondaryEconomicActivity: new Map(),
                 partners: new Map(),
+                employees: new Map(),
             });
         }
 
@@ -36,6 +37,7 @@ export const formattedResult = (result: any[]) => {
                 });
             }
         }
+
         if (item.partner_id) {
             if (!companyMap.get(companyId).partners.has(item.partner_id)) {
                 companyMap.get(companyId).partners.set(item.partner_id, {
@@ -46,6 +48,22 @@ export const formattedResult = (result: any[]) => {
                     email: item.email,
                     created_at: item.partner_created_at,
                     updated_at: item.partner_updated_at,
+                });
+            }
+        }
+
+        if (item.employe_id) {
+            if (!companyMap.get(companyId).employees.has(item.employe_id)) {
+                companyMap.get(companyId).employees.set(item.employe_id, {
+                    id: item.employe_id,
+                    first_name: item.employee_first_name,
+                    last_name: item.employee_last_name,
+                    cpf: item.employee_cpf,
+                    email: item.employee_email,
+                    role: item.employee_role,
+                    workload: item.employee_workload,
+                    created_at: item.employee_created_at,
+                    updated_at: item.employee_updated_at,
                 });
             }
         }
@@ -62,6 +80,11 @@ export const formattedResult = (result: any[]) => {
     // Convert Map of partners to Array for each company
     formattedCompanies.forEach((company) => {
         company.partners = Array.from(company.partners.values());
+    });
+
+    // Convert Map of employees to Array for each company
+    formattedCompanies.forEach((company) => {
+        company.employees = Array.from(company.employees.values());
     });
 
     return Array.from(companyMap.values());

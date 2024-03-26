@@ -14,13 +14,13 @@ export const getAll = async (
         const result = await Knex(EnumTableNames.companies)
             .select(
                 'companies.*',
-                'secondary_economic_activity.id as economic_id',
+                'secondary_economic_activity.id as economic_id', // Activities
                 'secondary_economic_activity.code',
                 'secondary_economic_activity.activity',
                 'secondary_economic_activity.id_company',
                 'secondary_economic_activity.created_at as economic_created_at',
                 'secondary_economic_activity.updated_at as economic_updated_at',
-                'partners.id as partner_id',
+                'partners.id as partner_id', // Partners
                 'partners.first_name',
                 'partners.last_name',
                 'partners.cpf',
@@ -28,6 +28,15 @@ export const getAll = async (
                 'partners.percentage',
                 'partners.created_at as partner_created_at',
                 'partners.updated_at as partner_updated_at',
+                'employees.id as employe_id', // Employees
+                'employees.first_name as employee_first_name',
+                'employees.last_name as employee_last_name',
+                'employees.cpf as employee_cpf',
+                'employees.email as employee_email',
+                'employees.role as employee_role',
+                'employees.workload as employee_workload',
+                'employees.created_at as employee_created_at',
+                'employees.updated_at as employee_updated_at',
             )
             .leftJoin(
                 EnumTableNames.secondary_economic_activity,
@@ -40,6 +49,12 @@ export const getAll = async (
                 'companies_partners.id_company',
             )
             .leftJoin(EnumTableNames.partners, 'partners.id', 'companies_partners.id_partner')
+            .leftJoin(
+                EnumTableNames.companies_employees,
+                'companies.id',
+                'companies_employees.id_company',
+            )
+            .leftJoin(EnumTableNames.employees, 'employees.id', 'companies_employees.id_employee')
             .where('companies.id', id)
             .orWhere('companies.company_name', 'like', `%${filter}%`)
             .andWhere('companies.id_user', IdUser)
