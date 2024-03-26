@@ -6,6 +6,7 @@ import {
     CompaniesControllers,
     secondary_economic_activityController,
     PartnersControllers,
+    EmployeesControllers,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
@@ -150,6 +151,38 @@ route.delete(
     ensureAuthenticated,
     PartnersControllers.deleteByIdValidation,
     PartnersControllers.deleteById,
+);
+
+// EMPLOYEES
+route.get(
+    '/employees',
+    ensureAuthenticated,
+    EmployeesControllers.getAllValidation,
+    EmployeesControllers.getAll,
+);
+route.get(
+    '/employees/:id',
+    ensureAuthenticated,
+    EmployeesControllers.getByIdValidation,
+    EmployeesControllers.getById,
+);
+route.post(
+    '/employees',
+    ensureAuthenticated,
+    EmployeesControllers.createValidation,
+    EmployeesControllers.create,
+);
+route.put(
+    '/employees/:id',
+    ensureAuthenticated,
+    EmployeesControllers.updateByIdValidation,
+    EmployeesControllers.updateById,
+);
+route.delete(
+    '/employees/:id',
+    ensureAuthenticated,
+    EmployeesControllers.deleteByIdValidation,
+    EmployeesControllers.deleteById,
 );
 
 export default route;
