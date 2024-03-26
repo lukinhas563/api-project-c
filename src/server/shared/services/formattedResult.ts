@@ -20,19 +20,48 @@ export const formattedResult = (result: any[]) => {
                 id_user: item.id_user,
                 created_at: item.created_at,
                 updated_at: item.updated_at,
-                secondaryEconomicActivity: [],
+                secondaryEconomicActivity: new Map(),
+                partners: new Map(),
             });
         }
 
         if (item.economic_id) {
-            companyMap.get(companyId).secondaryEconomicActivity.push({
-                id: item.economic_id,
-                code: item.code,
-                activity: item.activity,
-                created_at: item.economic_created_at,
-                updated_at: item.economic_updated_at,
-            });
+            if (!companyMap.get(companyId).secondaryEconomicActivity.has(item.economic_id)) {
+                companyMap.get(companyId).secondaryEconomicActivity.set(item.economic_id, {
+                    id: item.economic_id,
+                    code: item.code,
+                    activity: item.activity,
+                    created_at: item.economic_created_at,
+                    updated_at: item.economic_updated_at,
+                });
+            }
         }
+        if (item.partner_id) {
+            if (!companyMap.get(companyId).partners.has(item.partner_id)) {
+                companyMap.get(companyId).partners.set(item.partner_id, {
+                    id: item.partner_id,
+                    first_name: item.first_name,
+                    last_name: item.last_name,
+                    cpf: item.cpf,
+                    email: item.email,
+                    created_at: item.partner_created_at,
+                    updated_at: item.partner_updated_at,
+                });
+            }
+        }
+    });
+
+    // Convert Map of company to Array before return
+    const formattedCompanies = Array.from(companyMap.values());
+
+    // Convert Map of activities to Array for each company
+    formattedCompanies.forEach((company) => {
+        company.secondaryEconomicActivity = Array.from(company.secondaryEconomicActivity.values());
+    });
+
+    // Convert Map of partners to Array for each company
+    formattedCompanies.forEach((company) => {
+        company.partners = Array.from(company.partners.values());
     });
 
     return Array.from(companyMap.values());

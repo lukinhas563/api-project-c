@@ -20,12 +20,26 @@ export const getAll = async (
                 'secondary_economic_activity.id_company',
                 'secondary_economic_activity.created_at as economic_created_at',
                 'secondary_economic_activity.updated_at as economic_updated_at',
+                'partners.id as partner_id',
+                'partners.first_name',
+                'partners.last_name',
+                'partners.cpf',
+                'partners.email',
+                'partners.percentage',
+                'partners.created_at as partner_created_at',
+                'partners.updated_at as partner_updated_at',
             )
             .leftJoin(
                 EnumTableNames.secondary_economic_activity,
                 'companies.id',
                 'secondary_economic_activity.id_company',
             )
+            .leftJoin(
+                EnumTableNames.companies_partners,
+                'companies.id',
+                'companies_partners.id_company',
+            )
+            .leftJoin(EnumTableNames.partners, 'partners.id', 'companies_partners.id_partner')
             .where('companies.id', id)
             .orWhere('companies.company_name', 'like', `%${filter}%`)
             .andWhere('companies.id_user', IdUser)
