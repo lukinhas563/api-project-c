@@ -5,6 +5,7 @@ import {
     HomeController,
     CompaniesControllers,
     secondary_economic_activityController,
+    PartnersControllers,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
@@ -117,6 +118,38 @@ route.delete(
     ensureAuthenticated,
     secondary_economic_activityController.deleteByIdValidation,
     secondary_economic_activityController.deleteById,
+);
+
+// PARTNERS
+route.get(
+    '/partners',
+    ensureAuthenticated,
+    PartnersControllers.getAllValidation,
+    PartnersControllers.getAll,
+);
+route.get(
+    '/partners/:id',
+    ensureAuthenticated,
+    PartnersControllers.getByIdValidation,
+    PartnersControllers.getById,
+);
+route.post(
+    '/partners',
+    ensureAuthenticated,
+    PartnersControllers.createValidation,
+    PartnersControllers.create,
+);
+route.put(
+    '/partners/:id',
+    ensureAuthenticated,
+    PartnersControllers.updateByIdValidation,
+    PartnersControllers.updateById,
+);
+route.delete(
+    '/partners/:id',
+    ensureAuthenticated,
+    PartnersControllers.deleteByIdValidation,
+    PartnersControllers.deleteById,
 );
 
 export default route;
