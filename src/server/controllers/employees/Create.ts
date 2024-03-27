@@ -31,6 +31,7 @@ export const createValidation = validation((getSchema) => ({
 
 // CREATE A EMPLOYEE
 export const create = async (req: Request<{}, {}, typeEmployee, typeQueryProps>, res: Response) => {
+    // Check the querry
     if (!req.query.idCompany) {
         return res.status(400).json({
             errors: {

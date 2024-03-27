@@ -10,6 +10,7 @@ const queryPropSchema = yup.object({
     page: yup.number().notRequired().moreThan(0),
     limit: yup.number().notRequired().moreThan(0),
     filter: yup.string().notRequired(),
+    idCompany: yup.number().notRequired().moreThan(0),
 });
 
 type typeQueryProps = yup.InferType<typeof queryPropSchema>;
@@ -24,14 +25,27 @@ export const getAll = async (req: Request<{}, {}, {}, typeQueryProps>, res: Resp
     const page = req.query.page;
     const limit = req.query.limit;
     const filter = req.query.filter;
+    const idCompany = req.query.idCompany;
 
     // Function get all colaborator
-    const result = await secondary_economic_activityProviders.getAll(
-        Number(page) || 1,
-        Number(limit) || 10,
-        filter || '',
-        Number(req.headers.IdUser),
-    );
+    let result;
+    if (idCompany === undefined) {
+        result = await secondary_economic_activityProviders.getAll(
+            Number(page) || 1,
+            Number(limit) || 10,
+            filter || '',
+            Number(req.headers.IdUser),
+        );
+    } else {
+        result = await secondary_economic_activityProviders.getAllByCompany(
+            Number(page) || 1,
+            Number(limit) || 10,
+            filter || '',
+            Number(req.headers.IdUser),
+            Number(idCompany),
+        );
+    }
+
     // Count all collaborators
     const count = await secondary_economic_activityProviders.count(
         filter || '',

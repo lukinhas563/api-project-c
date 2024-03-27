@@ -58,7 +58,7 @@ export const getAll = async (
             .where('companies.id', id)
             .orWhere('companies.company_name', 'like', `%${filter}%`)
             .andWhere('companies.id_user', IdUser)
-            .andWhere('companies.id_collaborator', '=', idCollaborator)
+            .andWhere('companies.id_collaborator', idCollaborator)
             .offset((page - 1) * limit)
             .limit(limit);
 

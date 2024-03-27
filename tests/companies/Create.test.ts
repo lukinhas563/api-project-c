@@ -33,7 +33,7 @@ describe('Companies - Create', () => {
 
     test('Should create a new company', async () => {
         const res = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 company_name: 'Joelma Miranda',
@@ -43,7 +43,6 @@ describe('Companies - Create', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             });
 
         expect(res.statusCode).toEqual(201);
@@ -52,7 +51,7 @@ describe('Companies - Create', () => {
 
     test('Should not create with same CNPJ', async () => {
         const res1 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 company_name: 'Joelma Miranda',
@@ -66,7 +65,7 @@ describe('Companies - Create', () => {
             });
 
         const res2 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 company_name: 'Carmem Julia',
@@ -86,7 +85,7 @@ describe('Companies - Create', () => {
 
     test('Should not create with invalid infos', async () => {
         const res = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 company_name: 'Jo',
@@ -113,7 +112,7 @@ describe('Companies - Create', () => {
 
     test('Should to have all required fields', async () => {
         const res1 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
                 email: 'companyemail@email.com',
@@ -132,6 +131,16 @@ describe('Companies - Create', () => {
     });
 
     test('Should to have all fields', async () => {
+        const res1 = await testServer
+            .post('/companies?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({});
+
+        expect(res1.statusCode).toEqual(400);
+        expect(res1.body).toHaveProperty('errors');
+    });
+
+    test('Should not create without the querry idCollaborator', async () => {
         const res1 = await testServer
             .post('/companies')
             .set({ Authorization: `Bearer ${accessToken}` })

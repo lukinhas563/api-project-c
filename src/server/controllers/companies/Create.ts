@@ -5,10 +5,18 @@ import { companiesProviders } from '../../database/providers/Companies';
 
 import * as yup from 'yup';
 
-type typeBodyColaborator = Omit<typeCompany, 'id' | 'id_user'>;
+// VALIDADE QUERY
+const queryPropSchema = yup.object({
+    idCollaborator: yup.number().notRequired(),
+});
+
+type typeQueryProps = yup.InferType<typeof queryPropSchema>;
 
 // BODY VALIDATION
+type typeBodyColaborator = Omit<typeCompany, 'id' | 'id_user' | 'id_collaborator'>;
+
 export const createValidation = validation((getSchema) => ({
+    query: getSchema<typeQueryProps>(queryPropSchema),
     body: getSchema<typeBodyColaborator>(
         yup.object({
             company_name: yup.string().required().min(3).max(150),
@@ -20,17 +28,25 @@ export const createValidation = validation((getSchema) => ({
             status: yup.string().optional().min(3).max(150),
             opening_date: yup.string().required().min(3).max(150),
             main_economic_activity: yup.string().required().min(3).max(150),
-
-            id_collaborator: yup.number().required().moreThan(0),
         }),
     ),
 }));
 
 // CREATE A COMPANY
-export const create = async (req: Request<{}, {}, typeCompany>, res: Response) => {
+export const create = async (req: Request<{}, {}, typeCompany, typeQueryProps>, res: Response) => {
+    // Check the querry
+    if (!req.query.idCollaborator) {
+        return res.status(400).json({
+            errors: {
+                default: 'O parâmetro "idCollaborator" precisa ser informado.',
+            },
+        });
+    }
+
     // Call the provider
     const result = await companiesProviders.create({
         ...req.body,
+        id_collaborator: Number(req.query.idCollaborator),
         id_user: Number(req.headers.IdUser),
     });
 
