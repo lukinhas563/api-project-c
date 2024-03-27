@@ -1,6 +1,6 @@
 # E-Ficaz
 
-A API for contabilit system made on Node.js
+An API for accounting system made in Node.js
 
 1. [How to start](#howToStart)
 2. [How to use](#howToUse)
@@ -11,12 +11,14 @@ A API for contabilit system made on Node.js
     4. [Partners](#partners)
     5. [Employees](#employees)
     6. [Address](#address)
+    7. [tasks](#tasks)
+4. [Credit](#credit)
 
 <a name="howToStart"></a>
 
 ## How to start
 
-First, you'll need to install the dependences:
+First, you'll need to install the dependencies:
 
 ```
 $ npm install
@@ -75,7 +77,7 @@ _.URL/login
 }
 ```
 
-If you followed the steps correctly, you'll receive a TOKEN for use the system.
+If you followed the steps correctly, you'll receive a **TOKEN** for use the system.
 
 <a name="whatYouCanDo"></a>
 
@@ -85,8 +87,8 @@ If you followed the steps correctly, you'll receive a TOKEN for use the system.
 
 ### Collaborators
 
-In the E-Ficaz system, the users can create different profiles. These profiles are called 'Collaborators' and these one are responsible to registering companies, employees and make the tax records.
-You cand do it in this path using the method **POST**:
+In the E-Ficaz system, the users can create different profiles. These profiles are called **'Collaborators'** and these one are responsible to registering companies, employees and make the tax records.
+You cand do it in this path using the method <code>POST</code>:
 
 ```
 _.URL/collaborators
@@ -99,7 +101,7 @@ _.URL/collaborators
 }
 ```
 
-If you have the curiosity how many collaborators you have, you can verify all of them using the same path in the method **GET**, and then you'll recive something like that:
+If you have the curiosity how many collaborators you have, you can verify all of them using the same path in the method <code>GET</code>, and then you'll recive something like that:
 
 ```json
 {
@@ -138,21 +140,21 @@ If you have the curiosity how many collaborators you have, you can verify all of
 }
 ```
 
-But, if you are not content with the result, you can just delete or updated them using the methods **DELETE** and **PUT**. Using the mothod PUT, you can just send the id in the params and inform the updates into the request body.
+But, if you are not content with the result, you can just delete or updated them using the methods <code>DELETE</code> and <code>PUT</code>. Using the mothod <code>PUT</code>, you can just send the id in the params and inform the updates into the request body.
 
 ```
 _.URL/collaborators/:id
 ```
 
-```
+```json
 {
-	"last_name": "Santana"
+    "last_name": "Santana"
 }
 ```
 
 For delete is easy, just send the id in the params.
 
-But you won't always want to check all collaborators, you might want to check just one. For to do it, you can use the method GET with an ID and you'll recive that:
+But you won't always want to check all collaborators, you might want to check just one. For to do it, you can use the method <code>GET</code> with an ID and you'll recive that:
 
 ```json
 {
@@ -181,7 +183,7 @@ If you created your first collaborator you are able to register your first compa
 _.URL/companies?idCollaborator=1
 ```
 
-This path it is a little different than the last one. As you can see, you must to inform who is the responsible for the company through the querry **"idCollaborator"** an then you mush inform the **ID** of the collaborator. In the body of the request you must provide the following data:
+This path it is a little different than the last one. As you can see, you must to inform who is the responsible for the company through the querry <code>idCollaborator</code> an then you mush inform the **ID** of the collaborator. In the body of the request you must provide the following data:
 
 ```json
 {
@@ -194,7 +196,7 @@ This path it is a little different than the last one. As you can see, you must t
 }
 ```
 
-Following the same logic of the lasts one, if you wanto to see all companies of the collaborator you can the method **GET**:
+Following the same logic of the last one, if you wanto to see all companies of the collaborator you can the method <code>GET</code> :
 
 ```
 _.URL/companies?page=1&limit=9&idCollaborator=2
@@ -243,7 +245,7 @@ Result:
 }
 ```
 
-As you can see, this path has a few differents querrys, the <code>page</code>,<code>limit</code> and <code>idCollaborator</code>. The querrys page and limit are not required, but is you wanto to have more control over your searches you can use them. The querry **idCollaborator** is required and you must inform the ID of one of your collaborators.
+As you can see, this path has a few differents querrys, the <code>page</code>,<code>limit</code> and <code>idCollaborator</code>. The querrys page and limit are not required, but is you wanto to have more control over your searches you can use them. The querry <code>idCollaborator</code> is required and you must inform the **ID** of one of your collaborators.
 
 For get just one of them you can use this path:
 
@@ -260,9 +262,9 @@ For delete and update you can do the same way you already did using the method <
 
 The companies can offer a lot of others services too and you must inform it into the system.
 
-As you can see in the lest JSON result, the companies have some field that was not mentioned, the **"secondaryEconomicActivity"**, **"partners"** and **"employees"**. In this section we'll talk you about how you can register all the services that you campany can to offer.
+As you can see in the lest JSON result, the companies have some field that was not mentioned yet, the <code>secondaryEconomicActivity</code>, <code>partners</code> and <code>employees</code>. In this section we'll talk you about how you can register all the services that you campany can to offer.
 
-Using the path <code>activity</code> you can inform them using the mothod <code>POST</code>:
+Using the path <code>/activity</code> you can inform them using the mothod <code>POST</code>:
 
 ```
 _.URL/activity?idCompany=2
@@ -291,9 +293,9 @@ But it might to be a messy if you already registred a lot of them. Because of th
 _.URL/activity?idCompany=2
 ```
 
-Using the querry **idCompany** you have to inform the **ID** of the company and it will return all of activities belongs this company.
+Using the querry <code>idCompany</code> you have to inform the **ID** of the company and it will return all of activities that belongs this company.
 
-If you can see just one of them you can use the next path using the ID of the activity:
+If you want to see just one of them you can use the next path using the **ID** of the activity:
 
 ```
 _.URL/activity/1
@@ -323,7 +325,7 @@ Like the last one, you must to inform the company that this partner belongs to, 
 }
 ```
 
-To check all cof them you can use the method <code>GET</code>.
+To check all of them you can use the method <code>GET</code>.
 
 ```
 _.URL/partners
@@ -335,14 +337,14 @@ or for get by id:
 _.URL/partners/1
 ```
 
-It's normal to send wrong information, because of that you can also use the method <code>DELETE</code> and <code>PUT</code> to reverse this situation.
+It's normal to send wrong information, because of that you can also use the method <code>DELETE</code> and <code>PUT</code> to reverse this situation using their **ID**.
 
 <a name="employees"></a>
 
 ### Employees
 
 E-Ficaz is a system for contabilit, because of that is very important to have a form to check the employees of the companies.
-You can also register employees in each company in your system using the next path using the method <code>POST</code>:
+You can also register employees in each company in your system using the next path and using the method <code>POST</code>:
 
 ```
 _.URL/employees?idCompany=5
@@ -366,3 +368,67 @@ You can also use the methods <code>DELETE</code> and <code>PUT</code> to reverse
 <a name="address"></a>
 
 ### Address
+
+It's not required, but you might want to register their address to have more controls of your costumers.
+You can do that using the path <code>/address</code> and the method <code>POST</code> to register a new address:
+
+```
+_.URL/address?idCompany=6
+```
+
+Just like the others one,you must inform who this information belongs to using the params querry <code>idCompany</code>, <code>idPartner</code> or <code>idEmployee</code> through the infos:
+
+```json
+{
+    "street": "street",
+    "number": "code",
+    "city": "city",
+    "state": "state",
+    "zip_code": "zip_code"
+}
+```
+
+And use the method <code>GET</code> to get all addresses
+
+```
+_.URL/address
+```
+
+or get by id
+
+```
+_.URL/address/1
+```
+
+Just like the others one, you can update and delete them using the methods <code>DELETE</code> and <code>PUT</code>.
+
+<a name="tasks"></a>
+
+### Tasks
+
+This session is about the most different route in this app, the path <code>/tasks</code>. As you can think, in this path you can send tasks for your collaborators that you created.
+
+But not worry, it's easy!
+
+```
+_.URL/tasks?idCollaborator=1
+```
+
+Just like you already known, you just inform who belongs to this tasks using the collaborator's **ID** through the data using the method <code>POST</code>:
+
+```json
+{
+    "title": "title",
+    "description": "description",
+    "status": "status",
+    "priority": "priority"
+}
+```
+
+And again, you can delete or update whatwater infos that you want using the method <code>DELETE</code> and <code>PUT</code>.
+
+<a name="credit"></a>
+
+## Credit
+
+I would like to thank everyone who read this far and supported me in this very difficult project but which has provided me with a lot of learning.
