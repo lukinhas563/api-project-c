@@ -4,7 +4,7 @@ A API for contabilit system made on Node.js
 
 1. [How to start](#howToStart)
 2. [How to use](#howToUse)
-3. [How you can do](#whatYouCanDo)
+3. [What you can do](#whatYouCanDo)
     1. [Collaborators](#collaborators)
     2. [Companies](#companies)
     3. [Activities](#activities)
