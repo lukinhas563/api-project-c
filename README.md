@@ -88,7 +88,7 @@ If you followed the steps correctly, you'll receive a **TOKEN** for use the syst
 ### Collaborators
 
 In the E-Ficaz system, the users can create different profiles. These profiles are called **'Collaborators'** and these one are responsible to registering companies, employees and make the tax records.
-You cand do it in this path using the method <code>POST</code>:
+You can do it in this path using the method <code>POST</code>:
 
 ```
 _.URL/collaborators
