@@ -6,3 +6,4 @@ export * from './secondary_economic_activity';
 export * from './partners';
 export * from './employees';
 export * from './address';
+export * from './tasks';

@@ -8,6 +8,7 @@ import {
     PartnersControllers,
     EmployeesControllers,
     AddressController,
+    TasksController,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
@@ -216,6 +217,28 @@ route.delete(
     ensureAuthenticated,
     AddressController.deleteByIdValidation,
     AddressController.deleteById,
+);
+
+// TASKS
+route.get('/tasks', ensureAuthenticated, TasksController.getAllValidation, TasksController.getAll);
+route.get(
+    '/tasks/:id',
+    ensureAuthenticated,
+    TasksController.getByIdValidation,
+    TasksController.getById,
+);
+route.post('/tasks', ensureAuthenticated, TasksController.createValidation, TasksController.create);
+route.put(
+    '/tasks/:id',
+    ensureAuthenticated,
+    TasksController.updateByIdValidation,
+    TasksController.updateById,
+);
+route.delete(
+    '/tasks/:id',
+    ensureAuthenticated,
+    TasksController.deleteByIdValidation,
+    TasksController.deleteById,
 );
 
 export default route;

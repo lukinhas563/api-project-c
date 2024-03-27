@@ -11,4 +11,7 @@ export enum EnumTableNames {
     companies_employees = 'companies_employees',
 
     address = 'address',
+
+    tasks = 'tasks',
+    tasks_collaborators = 'tasks_collaborators',
 }
