@@ -2,6 +2,18 @@
 
 A API for contabilit system made on Node.js
 
+1. [How to start](#howToStart)
+2. [How to use](#howToUse)
+3. [How you can do](#whatYouCanDo)
+    1. [Collaborators](#collaborators)
+    2. [Companies](#companies)
+    3. [Activities](#activities)
+    4. [Partners](#partners)
+    5. [Employees](#employees)
+    6. [Address](#address)
+
+<a name="howToStart"></a>
+
 ## How to start
 
 First, you'll need to install the dependences:
@@ -25,6 +37,8 @@ $ npm run build
 
 $ npm start
 ```
+
+<a name="howToUse"></a>
 
 ## How to use
 
@@ -63,7 +77,11 @@ _.URL/login
 
 If you followed the steps correctly, you'll receive a TOKEN for use the system.
 
+<a name="whatYouCanDo"></a>
+
 ## What you can do
+
+<a name="collaborators"></a>
 
 ### Collaborators
 
@@ -152,6 +170,8 @@ But you won't always want to check all collaborators, you might want to check ju
 }
 ```
 
+<a name="companies"></a>
+
 ### Companies
 
 Ok, the most important thing abouth this system is the possibility of registering your costumers, the companies.
@@ -234,6 +254,8 @@ _.URL/companies/9?idCollaborator=2
 In this path you must send the **ID** of the company and inform who is the responsible for them.
 For delete and update you can do the same way you already did using the method <code>DELETE</code> and <code>PUT</code>.
 
+<a name="activities"></a>
+
 ### Activities
 
 The companies can offer a lot of others services too and you must inform it into the system.
@@ -279,6 +301,8 @@ _.URL/activity/1
 
 And using the method <code>DELETE</code> and <code>PUT</code> you can delete and update them, just like you already did.
 
+<a name="partners"></a>
+
 ### Partners
 
 Ok, let's talk about partners field.
@@ -313,6 +337,8 @@ _.URL/partners/1
 
 It's normal to send wrong information, because of that you can also use the method <code>DELETE</code> and <code>PUT</code> to reverse this situation.
 
+<a name="employees"></a>
+
 ### Employees
 
 E-Ficaz is a system for contabilit, because of that is very important to have a form to check the employees of the companies.
@@ -336,5 +362,7 @@ _.URL/employees/1
 ```
 
 You can also use the methods <code>DELETE</code> and <code>PUT</code> to reverse some wrong informations.
+
+<a name="address"></a>
 
 ### Address
