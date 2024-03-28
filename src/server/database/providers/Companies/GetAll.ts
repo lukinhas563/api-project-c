@@ -37,6 +37,15 @@ export const getAll = async (
                 'employees.workload as employee_workload',
                 'employees.created_at as employee_created_at',
                 'employees.updated_at as employee_updated_at',
+                'address.id as address_id', // Address
+                'address.street',
+                'address.number',
+                'address.complement',
+                'address.city',
+                'address.state',
+                'address.zip_code',
+                'address.created_at as address_created_at',
+                'address.updated_at as address_updated_at',
             )
             .leftJoin(
                 EnumTableNames.secondary_economic_activity,
@@ -55,6 +64,7 @@ export const getAll = async (
                 'companies_employees.id_company',
             )
             .leftJoin(EnumTableNames.employees, 'employees.id', 'companies_employees.id_employee')
+            .leftJoin(EnumTableNames.address, 'companies.id', 'address.id_company')
             .where('companies.id', id)
             .orWhere('companies.company_name', 'like', `%${filter}%`)
             .andWhere('companies.id_user', IdUser)

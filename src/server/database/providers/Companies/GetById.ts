@@ -26,6 +26,15 @@ export const getById = async (
                 'partners.percentage',
                 'partners.created_at as partner_created_at',
                 'partners.updated_at as partner_updated_at',
+                'address.id as address_id', // Address
+                'address.street',
+                'address.number',
+                'address.complement',
+                'address.city',
+                'address.state',
+                'address.zip_code',
+                'address.created_at as address_created_at',
+                'address.updated_at as address_updated_at',
             )
             .leftJoin(
                 EnumTableNames.secondary_economic_activity,
@@ -38,6 +47,7 @@ export const getById = async (
                 'companies_partners.id_company',
             )
             .leftJoin(EnumTableNames.partners, 'partners.id', 'companies_partners.id_partner')
+            .leftJoin(EnumTableNames.address, 'companies.id', 'address.id_company')
             .where('companies.id', '=', idCompany)
             .andWhere('companies.id_user', '=', idUser)
             .andWhere('companies.id_collaborator', '=', idCollaborator);

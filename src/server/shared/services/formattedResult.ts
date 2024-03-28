@@ -23,6 +23,7 @@ export const formattedResult = (result: any[]) => {
                 secondaryEconomicActivity: new Map(),
                 partners: new Map(),
                 employees: new Map(),
+                address: [],
             });
         }
 
@@ -66,6 +67,20 @@ export const formattedResult = (result: any[]) => {
                     updated_at: item.employee_updated_at,
                 });
             }
+        }
+
+        if (item.address_id) {
+            companyMap.get(companyId).address.push({
+                id: item.address_id,
+                street: item.street,
+                number: item.number,
+                complement: item.complement,
+                city: item.city,
+                state: item.state,
+                zip_code: item.zip_code,
+                created_at: item.address_created_at,
+                updated_at: item.address_updated_at,
+            });
         }
     });
 

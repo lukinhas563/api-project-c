@@ -10,10 +10,22 @@ export const getAll = async (
 ) => {
     try {
         const result = await Knex(EnumTableNames.employees)
-            .select('*')
-            .where('id', id)
-            .orWhere('first_name', 'like', `%${filter}%`)
-            .andWhere('id_user', IdUser)
+            .select(
+                'employees.*',
+                'address.id as address_id', // Address
+                'address.street',
+                'address.number',
+                'address.complement',
+                'address.city',
+                'address.state',
+                'address.zip_code',
+                'address.created_at as address_created_at',
+                'address.updated_at as address_updated_at',
+            )
+            .leftJoin(EnumTableNames.address, 'employees.id', 'address.id_employee')
+            .where('employees.id', id)
+            .orWhere('employees.first_name', 'like', `%${filter}%`)
+            .andWhere('employees.id_user', IdUser)
             .offset((page - 1) * limit)
             .limit(limit);
 
