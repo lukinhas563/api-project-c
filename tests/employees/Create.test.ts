@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Activities - Create', () => {
+describe('Employees - Create', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -79,13 +79,14 @@ describe('Activities - Create', () => {
             .send(companies[2]);
     });
 
-    test('Should create a new activity for a company', async () => {
+    test('Should create a new employee for a company', async () => {
         const res = await testServer
-            .post('/activity?idCompany=1')
+            .post('/employees?idCompany=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
             });
 
         expect(res.statusCode).toEqual(201);
@@ -93,13 +94,14 @@ describe('Activities - Create', () => {
         expect(res.body).toHaveProperty('result');
     });
 
-    test('Should not create without a id_company', async () => {
+    test('Should not create without a querry', async () => {
         const res1 = await testServer
-            .post('/activity')
+            .post('/employees')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
             });
 
         expect(res1.statusCode).toEqual(400);
@@ -108,9 +110,10 @@ describe('Activities - Create', () => {
     });
 
     test('Should not create without a token', async () => {
-        const res1 = await testServer.post('/activity?idCompany=2').send({
-            code: '11.25.23',
-            activity: 'Limpeza e lavagem de carros',
+        const res1 = await testServer.post('/employees?idCompany=1').send({
+            first_name: 'Lais',
+            last_name: 'Santana',
+            cpf: '98565985695',
         });
 
         expect(res1.statusCode).toEqual(401);

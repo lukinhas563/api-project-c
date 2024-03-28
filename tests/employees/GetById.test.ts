@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Activities - Create', () => {
+describe('Activity - Get by id', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -39,7 +39,6 @@ describe('Activities - Create', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Caio Castro Brothers',
@@ -49,7 +48,6 @@ describe('Activities - Create', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Marcos Mion Santos',
@@ -59,7 +57,6 @@ describe('Activities - Create', () => {
                 tax_regime: 'lucro presumido',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
         ];
 
@@ -77,43 +74,78 @@ describe('Activities - Create', () => {
             .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[2]);
+
+        const employees = [
+            {
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
+            },
+            {
+                first_name: 'Mario',
+                last_name: 'Santana',
+                cpf: '98565452332',
+            },
+            {
+                first_name: 'Joao',
+                last_name: 'Vitor',
+                cpf: '98565236595',
+            },
+        ];
+
+        const activity1 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[0]);
+
+        const activity2 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[1]);
+
+        const activity3 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[2]);
     });
 
-    test('Should create a new activity for a company', async () => {
+    test('Should get a employee by id', async () => {
         const res = await testServer
-            .post('/activity?idCompany=1')
+            .get(`/employees/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
-            });
+            .send();
 
-        expect(res.statusCode).toEqual(201);
-        expect(typeof res.body).toBe('object');
+        expect(res.status).toBe(200);
+        expect(res.body).toBeInstanceOf(Object);
+
         expect(res.body).toHaveProperty('result');
+        expect(res.body).toHaveProperty('result.id');
+        expect(res.body).toHaveProperty('result.first_name');
+        expect(res.body).toHaveProperty('result.last_name');
+        expect(res.body).toHaveProperty('result.cpf');
+        expect(res.body).toHaveProperty('result.email');
+        expect(res.body).toHaveProperty('result.role');
+        expect(res.body).toHaveProperty('result.workload');
+        expect(res.body).toHaveProperty('result.id_user');
+        expect(res.body).toHaveProperty('result.created_at');
+        expect(res.body).toHaveProperty('result.updated_at');
+
+        expect(res.body.result.id).not.toBeNaN();
+        expect(res.body.result.id).not.toBeNull();
+        expect(res.body.result.id).not.toBeLessThan(0);
+
+        expect(res.body.result.id_user).not.toBeNaN();
+        expect(res.body.result.id_user).not.toBeNull();
+        expect(res.body.result.id_user).not.toBeLessThan(0);
+
+        expect(res.body.result.created_at).not.toBeNull();
+        expect(res.body.result.updated_at).not.toBeNull();
     });
 
-    test('Should not create without a id_company', async () => {
-        const res1 = await testServer
-            .post('/activity')
-            .set({ Authorization: `Bearer ${accessToken}` })
-            .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
-            });
+    test('Should not get by id without a token', async () => {
+        const res = await testServer.get(`/employees/1`).send();
 
-        expect(res1.statusCode).toEqual(400);
-        expect(typeof res1.body).toBe('object');
-        expect(res1.body).toHaveProperty('errors.default');
-    });
-
-    test('Should not create without a token', async () => {
-        const res1 = await testServer.post('/activity?idCompany=2').send({
-            code: '11.25.23',
-            activity: 'Limpeza e lavagem de carros',
-        });
-
-        expect(res1.statusCode).toEqual(401);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res.statusCode).toEqual(401);
+        expect(res.body).toHaveProperty('errors.default');
     });
 });

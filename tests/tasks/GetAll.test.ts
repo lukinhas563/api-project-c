@@ -30,8 +30,10 @@ describe('Activity - Get all', () => {
                 email: 'test1@email.com',
             });
 
-        const companies = [
-            {
+        const company = await testServer
+            .post('/companies?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({
                 company_name: 'Joelma Miranda',
                 fantasy_name: 'Escola de Danca',
                 cnpj: '50.985.654/0001-01',
@@ -39,76 +41,57 @@ describe('Activity - Get all', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
+            });
+
+        const employee = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
+            });
+
+        const tasks = [
+            {
+                title: 'Estudar programação',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             },
             {
-                company_name: 'Caio Castro Brothers',
-                fantasy_name: 'Armazem e Funilaria Ltda',
-                cnpj: '50.152.685/0001-01',
-                size: 'me',
-                tax_regime: 'simples nacional',
-                opening_date: '11/09/1997',
-                main_economic_activity: 'Vendedor',
+                title: 'Estudar ingles',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             },
             {
-                company_name: 'Marcos Mion Santos',
-                fantasy_name: 'Limpeza e Lavagem',
-                cnpj: '30.523.987/0001-01',
-                size: 'epp',
-                tax_regime: 'lucro presumido',
-                opening_date: '11/09/1997',
-                main_economic_activity: 'Vendedor',
+                title: 'Ler um livro',
+                description: 'De segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Média',
             },
         ];
 
-        const company1 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task1 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[0]);
+            .send(tasks[0]);
 
-        const company2 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task2 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[1]);
+            .send(tasks[1]);
 
-        const company3 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task3 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[2]);
-
-        const activities = [
-            {
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
-            },
-            {
-                code: '20.35.40',
-                activity: 'Funilaria e armazenagem',
-            },
-            {
-                code: '30.40.55',
-                activity: 'Mecanica e venda',
-            },
-        ];
-
-        const activity1 = await testServer
-            .post('/activity?idCompany=1')
-            .set({ Authorization: `Bearer ${accessToken}` })
-            .send(activities[0]);
-
-        const activity2 = await testServer
-            .post('/activity?idCompany=1')
-            .set({ Authorization: `Bearer ${accessToken}` })
-            .send(activities[1]);
-
-        const activity3 = await testServer
-            .post('/activity?idCompany=1')
-            .set({ Authorization: `Bearer ${accessToken}` })
-            .send(activities[2]);
+            .send(tasks[2]);
     });
 
     test('Should get all corrects infos', async () => {
         const res = await testServer
-            .get(`/activity?idCompany=1`)
+            .get(`/tasks`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
@@ -124,9 +107,10 @@ describe('Activity - Get all', () => {
         expect(res.body.result[2]).toBeInstanceOf(Object);
 
         expect(res.body.result[0]).toHaveProperty('id');
-        expect(res.body.result[0]).toHaveProperty('code');
-        expect(res.body.result[0]).toHaveProperty('activity');
-        expect(res.body.result[0]).toHaveProperty('id_company');
+        expect(res.body.result[0]).toHaveProperty('title');
+        expect(res.body.result[0]).toHaveProperty('description');
+        expect(res.body.result[0]).toHaveProperty('status');
+        expect(res.body.result[0]).toHaveProperty('priority');
         expect(res.body.result[0]).toHaveProperty('id_user');
         expect(res.body.result[0]).toHaveProperty('created_at');
         expect(res.body.result[0]).toHaveProperty('updated_at');
@@ -139,16 +123,12 @@ describe('Activity - Get all', () => {
         expect(res.body.result[0].id_user).not.toBeNull();
         expect(res.body.result[0].id_user).not.toBeLessThan(0);
 
-        expect(res.body.result[0].id_company).not.toBeNaN();
-        expect(res.body.result[0].id_company).not.toBeNull();
-        expect(res.body.result[0].id_company).not.toBeLessThan(0);
-
         expect(res.body.result[0].created_at).not.toBeNull();
         expect(res.body.result[0].updated_at).not.toBeNull();
     });
 
     test('Should not get all without a token', async () => {
-        const res = await testServer.get(`/activity?idCompany=1`).send();
+        const res = await testServer.get(`/tasks`).send();
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toHaveProperty('errors.default');

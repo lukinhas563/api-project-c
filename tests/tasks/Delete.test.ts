@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Companies - Delete', () => {
+describe('Tasks - Delete', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -24,13 +24,11 @@ describe('Companies - Delete', () => {
             .post('/collaborators')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                first_name: 'Lucas',
-                last_name: 'Montenegro',
+                first_name: 'teste1',
+                last_name: 'test1',
                 cpf: '78954252151',
-                email: 'lucasmontenegro@email.com',
+                email: 'test1@email.com',
             });
-
-        const idCollaborator = collaborator.body.return;
 
         const company = await testServer
             .post('/companies?idCollaborator=1')
@@ -43,13 +41,57 @@ describe('Companies - Delete', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: Number(idCollaborator),
             });
+
+        const employee = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
+            });
+
+        const tasks = [
+            {
+                title: 'Estudar programação',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
+            },
+            {
+                title: 'Estudar ingles',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
+            },
+            {
+                title: 'Ler um livro',
+                description: 'De segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Média',
+            },
+        ];
+
+        const task1 = await testServer
+            .post('/tasks?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(tasks[0]);
+
+        const task2 = await testServer
+            .post('/tasks?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(tasks[1]);
+
+        const task3 = await testServer
+            .post('/tasks?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(tasks[2]);
     });
 
-    test('Should delete a company', async () => {
+    test('Should delete a task', async () => {
         const res = await testServer
-            .delete(`/companies/1`)
+            .delete(`/tasks/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
@@ -57,9 +99,9 @@ describe('Companies - Delete', () => {
         expect(res.body).toHaveProperty('result');
     });
 
-    test('Should not delete an nonexistent company', async () => {
+    test('Should not delete an nonexistent task', async () => {
         const res = await testServer
-            .delete(`/companies/199`)
+            .delete(`/tasks/199`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send();
 
@@ -68,7 +110,7 @@ describe('Companies - Delete', () => {
     });
 
     test('Should not delete without a token', async () => {
-        const res = await testServer.delete(`/companies/1`).send();
+        const res = await testServer.delete(`/tasks/1`).send();
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toHaveProperty('errors.default');

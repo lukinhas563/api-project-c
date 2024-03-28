@@ -61,7 +61,6 @@ describe('Companies - Create', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             });
 
         const res2 = await testServer
@@ -75,7 +74,6 @@ describe('Companies - Create', () => {
                 tax_regime: 'lucro presumido',
                 opening_date: '11/09/2020',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             });
 
         expect(res2.statusCode).toEqual(500);
@@ -95,7 +93,6 @@ describe('Companies - Create', () => {
                 tax_regime: 'si',
                 opening_date: '11',
                 main_economic_activity: 'Ve',
-                id_collaborator: 0,
             });
 
         expect(res.statusCode).toEqual(400);
@@ -107,7 +104,6 @@ describe('Companies - Create', () => {
         expect(res.body).toHaveProperty('errors.body.tax_regime');
         expect(res.body).toHaveProperty('errors.body.opening_date');
         expect(res.body).toHaveProperty('errors.body.main_economic_activity');
-        expect(res.body).toHaveProperty('errors.body.id_collaborator');
     });
 
     test('Should to have all required fields', async () => {

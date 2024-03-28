@@ -39,7 +39,6 @@ describe('Activity - Update', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Caio Castro Brothers',
@@ -49,7 +48,6 @@ describe('Activity - Update', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Marcos Mion Santos',
@@ -59,22 +57,21 @@ describe('Activity - Update', () => {
                 tax_regime: 'lucro presumido',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
         ];
 
         const company1 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[0]);
 
         const company2 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[1]);
 
         const company3 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[2]);
 
@@ -82,32 +79,29 @@ describe('Activity - Update', () => {
             {
                 code: '11.25.23',
                 activity: 'Limpeza e lavagem de carros',
-                id_company: 1,
             },
             {
                 code: '20.35.40',
                 activity: 'Funilaria e armazenagem',
-                id_company: 1,
             },
             {
                 code: '30.40.55',
                 activity: 'Mecanica e venda',
-                id_company: 2,
             },
         ];
 
         const activity1 = await testServer
-            .post('/activity')
+            .post('/activity?idCompany=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(activities[0]);
 
         const activity2 = await testServer
-            .post('/activity')
+            .post('/activity?idCompany=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(activities[1]);
 
         const activity3 = await testServer
-            .post('/activity')
+            .post('/activity?idCompany=2')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(activities[2]);
     });

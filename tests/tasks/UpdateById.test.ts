@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Companies - Update', () => {
+describe('Employees - Update', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -30,8 +30,10 @@ describe('Companies - Update', () => {
                 email: 'test1@email.com',
             });
 
-        const companies = [
-            {
+        const company = await testServer
+            .post('/companies?idCollaborator=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({
                 company_name: 'Joelma Miranda',
                 fantasy_name: 'Escola de Danca',
                 cnpj: '50.985.654/0001-01',
@@ -39,50 +41,60 @@ describe('Companies - Update', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
+            });
+
+        const employee = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send({
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
+            });
+
+        const tasks = [
+            {
+                title: 'Estudar programação',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             },
             {
-                company_name: 'Caio Castro Brothers',
-                fantasy_name: 'Armazem e Funilaria Ltda',
-                cnpj: '50.152.685/0001-01',
-                size: 'me',
-                tax_regime: 'simples nacional',
-                opening_date: '11/09/1997',
-                main_economic_activity: 'Vendedor',
+                title: 'Estudar ingles',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             },
             {
-                company_name: 'Marcos Mion Santos',
-                fantasy_name: 'Limpeza e Lavagem',
-                cnpj: '30.523.987/0001-01',
-                size: 'epp',
-                tax_regime: 'lucro presumido',
-                opening_date: '11/09/1997',
-                main_economic_activity: 'Vendedor',
+                title: 'Ler um livro',
+                description: 'De segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Média',
             },
         ];
 
-        const company1 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task1 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[0]);
+            .send(tasks[0]);
 
-        const company2 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task2 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[1]);
+            .send(tasks[1]);
 
-        const company3 = await testServer
-            .post('/companies?idCollaborator=1')
+        const task3 = await testServer
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send(companies[2]);
+            .send(tasks[2]);
     });
 
-    test('Should update a company by id', async () => {
+    test('Should update a task by id', async () => {
         const res = await testServer
-            .put(`/companies/1?idCollaborator=1`)
+            .put(`/tasks/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                company_name: 'Test Test Test',
-                email: 'testetesteteste@email.com',
+                title: 'Test Test Test',
             });
 
         expect(res.status).toBe(200);
@@ -90,24 +102,20 @@ describe('Companies - Update', () => {
         expect(res.body).toBeInstanceOf(Object);
     });
 
-    test('Should not update a company without a querry param', async () => {
+    test('Should not update without a body', async () => {
         const res = await testServer
-            .put(`/companies/1`)
+            .put(`/tasks/1`)
             .set({ Authorization: `Bearer ${accessToken}` })
-            .send({
-                company_name: 'Test Test Test',
-                email: 'testetesteteste@email.com',
-            });
+            .send();
 
         expect(res.status).toBe(400);
-        expect(res.body).toHaveProperty('errors');
+        expect(res.body).toHaveProperty('errors.default');
         expect(res.body).toBeInstanceOf(Object);
     });
 
-    test('Should not update a collaborator without a token', async () => {
-        const res = await testServer.put(`/companies/1?idCollaborator=1`).send({
-            company_name: 'Test Test Test',
-            email: 'testetesteteste@email.com',
+    test('Should not update a task without a token', async () => {
+        const res = await testServer.put(`/tasks/1`).send({
+            title: 'Test Test Test',
         });
 
         expect(res.statusCode).toEqual(401);

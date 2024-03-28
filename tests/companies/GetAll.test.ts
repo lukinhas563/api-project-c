@@ -39,7 +39,6 @@ describe('Companies - Get all', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Caio Castro Brothers',
@@ -49,7 +48,6 @@ describe('Companies - Get all', () => {
                 tax_regime: 'simples nacional',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
             {
                 company_name: 'Marcos Mion Santos',
@@ -59,22 +57,21 @@ describe('Companies - Get all', () => {
                 tax_regime: 'lucro presumido',
                 opening_date: '11/09/1997',
                 main_economic_activity: 'Vendedor',
-                id_collaborator: 1,
             },
         ];
 
         const company1 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[0]);
 
         const company2 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[1]);
 
         const company3 = await testServer
-            .post('/companies')
+            .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[2]);
     });

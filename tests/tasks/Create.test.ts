@@ -1,6 +1,6 @@
 import { testServer } from '../jest.setup';
 
-describe('Activities - Create', () => {
+describe('Tasks - Create', () => {
     let accessToken = '';
 
     beforeAll(async () => {
@@ -77,15 +77,50 @@ describe('Activities - Create', () => {
             .post('/companies?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send(companies[2]);
+
+        const employees = [
+            {
+                first_name: 'Lais',
+                last_name: 'Santana',
+                cpf: '98565985695',
+            },
+            {
+                first_name: 'Mario',
+                last_name: 'Santana',
+                cpf: '98565452332',
+            },
+            {
+                first_name: 'Joao',
+                last_name: 'Vitor',
+                cpf: '98565236595',
+            },
+        ];
+
+        const employee1 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[0]);
+
+        const employee2 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[1]);
+
+        const employee3 = await testServer
+            .post('/employees?idCompany=1')
+            .set({ Authorization: `Bearer ${accessToken}` })
+            .send(employees[2]);
     });
 
-    test('Should create a new activity for a company', async () => {
+    test('Should create a new task for a collaborator', async () => {
         const res = await testServer
-            .post('/activity?idCompany=1')
+            .post('/tasks?idCollaborator=1')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
+                title: 'Estudar programação',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             });
 
         expect(res.statusCode).toEqual(201);
@@ -93,13 +128,15 @@ describe('Activities - Create', () => {
         expect(res.body).toHaveProperty('result');
     });
 
-    test('Should not create without a id_company', async () => {
+    test('Should not create without a querry', async () => {
         const res1 = await testServer
-            .post('/activity')
+            .post('/tasks')
             .set({ Authorization: `Bearer ${accessToken}` })
             .send({
-                code: '11.25.23',
-                activity: 'Limpeza e lavagem de carros',
+                title: 'Estudar programação',
+                description: 'Estudar de segunda a sexta',
+                status: 'Em progresso',
+                priority: 'Total',
             });
 
         expect(res1.statusCode).toEqual(400);
@@ -108,9 +145,11 @@ describe('Activities - Create', () => {
     });
 
     test('Should not create without a token', async () => {
-        const res1 = await testServer.post('/activity?idCompany=2').send({
-            code: '11.25.23',
-            activity: 'Limpeza e lavagem de carros',
+        const res1 = await testServer.post('/tasks?idCollaborator=1').send({
+            title: 'Estudar programação',
+            description: 'Estudar de segunda a sexta',
+            status: 'Em progresso',
+            priority: 'Total',
         });
 
         expect(res1.statusCode).toEqual(401);
