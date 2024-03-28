@@ -11,7 +11,6 @@ type typeBodyColaborator = Omit<typeCollaborator, 'id' | 'id_user'>;
 export const createValidation = validation((getSchema) => ({
     body: getSchema<typeBodyColaborator>(
         yup.object({
-            photo: yup.string().optional(),
             first_name: yup.string().required().min(3).max(150),
             last_name: yup.string().optional().min(3).max(150),
             cpf: yup.string().optional().min(11),
@@ -39,5 +38,5 @@ export const create = async (req: Request<{}, {}, typeBodyColaborator>, res: Res
 
     return res
         .status(201)
-        .json({ result: 'CREATED A COLABORATOR NEW COLABORATOR', return: result });
+        .json({ result: 'CREATED A COLABORATOR NEW COLLABORATOR', return: result });
 };

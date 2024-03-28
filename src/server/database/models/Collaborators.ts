@@ -1,6 +1,5 @@
 export type typeCollaborator = {
     id: number;
-    photo?: string;
     first_name: string;
     last_name?: string;
     cpf?: string;
