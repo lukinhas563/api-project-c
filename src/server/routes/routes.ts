@@ -9,6 +9,7 @@ import {
     EmployeesControllers,
     AddressController,
     TasksController,
+    RegistrationsController,
 } from '../controllers';
 import { ensureAuthenticated } from '../shared/middlewares';
 
@@ -239,6 +240,38 @@ route.delete(
     ensureAuthenticated,
     TasksController.deleteByIdValidation,
     TasksController.deleteById,
+);
+
+// REGISTRATIONS
+route.get(
+    '/registrations',
+    ensureAuthenticated,
+    RegistrationsController.getAllValidation,
+    RegistrationsController.getAll,
+);
+route.get(
+    '/registrations/:id',
+    ensureAuthenticated,
+    RegistrationsController.getByIdValidation,
+    RegistrationsController.getById,
+);
+route.post(
+    '/registrations',
+    ensureAuthenticated,
+    RegistrationsController.createValidation,
+    RegistrationsController.create,
+);
+route.put(
+    '/registrations/:id',
+    ensureAuthenticated,
+    RegistrationsController.updateByIdValidation,
+    RegistrationsController.updateById,
+);
+route.delete(
+    '/registrations/:id',
+    ensureAuthenticated,
+    RegistrationsController.deleteByIdValidation,
+    RegistrationsController.deleteById,
 );
 
 export default route;

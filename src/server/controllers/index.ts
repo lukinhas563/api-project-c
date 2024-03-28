@@ -7,3 +7,4 @@ export * from './partners';
 export * from './employees';
 export * from './address';
 export * from './tasks';
+export * from './registrations';

@@ -14,4 +14,6 @@ export enum EnumTableNames {
 
     tasks = 'tasks',
     tasks_collaborators = 'tasks_collaborators',
+
+    registrations = 'registrations',
 }

@@ -6,3 +6,4 @@ export * from './Partners';
 export * from './Employee';
 export * from './Address';
 export * from './Tasks';
+export * from './Registrations';
