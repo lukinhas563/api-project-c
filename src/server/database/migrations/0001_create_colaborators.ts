@@ -7,7 +7,6 @@ export async function up(knex: Knex) {
             table.increments('id').unsigned().primary().index();
             table.string('first_name', 150).notNullable().checkLength('>=', 3);
             table.string('last_name', 150).checkLength('>=', 3);
-            table.string('cpf', 11).checkLength('>', 10);
             table.string('email', 255).checkLength('>', 6);
             table.integer('id_user').unsigned();
 

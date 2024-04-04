@@ -41,7 +41,6 @@ exports.createUserValidation = (0, middlewares_1.validation)((getSchema) => ({
         user_name: yup.string().required().min(3).max(150),
         first_name: yup.string().required().min(3).max(150),
         last_name: yup.string().required().min(3).max(150),
-        cpf: yup.string().required().min(11),
         email: yup.string().email().required().min(7).max(150),
         password_hash: yup.string().required().min(3).max(150),
     })),

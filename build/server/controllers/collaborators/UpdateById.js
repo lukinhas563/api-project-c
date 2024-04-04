@@ -45,7 +45,6 @@ exports.updateByIdValidation = (0, middlewares_1.validation)((getSchema) => ({
         photo: yup.string().optional(),
         first_name: yup.string().optional().min(3),
         last_name: yup.string().optional().min(3),
-        cpf: yup.string().optional().min(11),
         email: yup.string().email().optional(),
     })),
 }));

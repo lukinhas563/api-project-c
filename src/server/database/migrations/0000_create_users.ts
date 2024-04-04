@@ -8,7 +8,6 @@ export async function up(knex: Knex) {
             table.string('user_name', 150).notNullable().unique().checkLength('>', 6);
             table.string('first_name', 150).notNullable().checkLength('>=', 3);
             table.string('last_name', 150).checkLength('>=', 3);
-            table.string('cpf', 11).notNullable().unique().checkLength('>', 10);
             table.string('email', 255).notNullable().unique().checkLength('>', 6);
             table.string('password_hash', 255).notNullable().unique().checkLength('>', 6);
             table.timestamps(true, true);

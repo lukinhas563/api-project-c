@@ -13,7 +13,6 @@ export const createValidation = validation((getSchema) => ({
         yup.object({
             first_name: yup.string().required().min(3).max(150),
             last_name: yup.string().optional().min(3).max(150),
-            cpf: yup.string().optional().min(11),
             email: yup.string().optional().email().min(5),
         }),
     ),
