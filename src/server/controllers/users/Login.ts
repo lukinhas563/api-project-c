@@ -49,6 +49,15 @@ export const login = async (req: Request<{}, {}, typeUser>, res: Response) => {
             });
         }
 
-        return res.status(200).json({ accessToken: accessToken });
+        console.log(result);
+
+        return res.status(200).json({
+            id: result.id,
+            user_name: result.user_name,
+            first_name: result.first_name,
+            last_name: result.last_name,
+            email: result.email,
+            accessToken: accessToken,
+        });
     }
 };
