@@ -7,11 +7,7 @@ import route from './routes/routes';
 
 const server = express();
 
-server.use(
-    cors({
-        origin: process.env.ENABLED_CORS?.split(';') || [],
-    }),
-);
+server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
